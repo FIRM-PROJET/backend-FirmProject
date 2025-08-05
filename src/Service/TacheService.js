@@ -719,6 +719,52 @@ const getDureeEnHeures = (duree, id_unite_duree) => {
 
   return duree * facteur;
 };
+async function find_tache_files(ref_tache) {
+  try {
+    const sql = `SELECT nom_fichier, chemin_fichier FROM fichier_tache WHERE ref_tache = $1`;
+    const params = [ref_tache];
+    
+    const result = await db.query(sql, params);
+    return result.rows;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des détails du projet :",
+      error
+    );
+  }
+}
+async function find_all_tache_files() {
+  try {
+    const sql = `SELECT nom_fichier, chemin_fichier FROM fichier_tache`;
+    const result = await db.query(sql);
+    return result.rows;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des détails du projet :",
+      error
+    );
+  }
+}
+const add_tache_files = async (data) => {
+  try {
+    const { ref_tache, nom_fichier, chemin_fichier } = data;
+
+    const query = `
+      INSERT INTO fichier_tache (
+        ref_tache,
+        nom_fichier,
+        chemin_fichier
+      ) VALUES ($1, $2, $3)
+      RETURNING *
+    `;
+    const values = [ref_tache, nom_fichier, chemin_fichier];
+    const result = await db.query(query, values);
+    return result.rows[0];
+  } catch (error) {
+    console.error("Erreur lors de l’insertion dans fichier_tache :", error);
+    throw error;
+  }
+};
 
 module.exports = {
   insert_tache,
@@ -733,4 +779,7 @@ module.exports = {
   update_statut_termine,
   update_statut_en_cours,
   getSousTaches,
+  find_tache_files,
+  find_all_tache_files,
+  add_tache_files
 };
