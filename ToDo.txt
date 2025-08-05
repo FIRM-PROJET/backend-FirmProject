@@ -1,0 +1,134 @@
+CAHIER DES CHARGES FONCTIONNEL
+Mise en place d’une plateforme web de suivi de projets et devis au sein de Firm Architecture
+Entreprise : Firm Architecture
+Nom de l'application : Firm Async
+
+Technologie : 
+-Front-End : React , Intégration avec API
+-Back-End : Java Spring Boot API
+
+LISTE DES TACHES : 
+
+1. Connexion et inscription : 
+    I)Metier :
+    Fonctions : 
+        -Check via API si utilisateur existe retourner idUtilisateur (mettre dans une SESSION)
+        -CRUD utilisateur et role via API 
+        -Modifier le mot de passe 
+
+    II)Affichage :
+        -Formulaire connexion (identifiant et mot de passe )
+        -Créer un formulaire pour ajouter un nouveau utilisateur
+        -Lien redirection inscription
+
+    III)Integration : 
+        -Tester la validation des champs 
+        -Envoi d'exception si champs non valides 
+        -Si session réussie redirection vers Acceuil
+
+2. Module devis :
+    I)Metier :
+    Fonctions BACK-END : 
+        -Listes types de construction
+        -Listes projets réferrents au type de construction 
+        -Listes des designations des travaux 
+        -Calcul des devis sélectionés (moyenne)
+        -Calcul des pourcentage , de ratios 
+        -Montant Total HT et TTC
+
+    II)Affichage :
+        -Affichage des listes sélection 
+        -Listes checkbox travaux
+        -Recherche et tri des devis (client,type construction)    
+        -Bouton export
+        -Export devis pdf et excel
+
+3. Module projets
+
+    I)Metier :
+    Fonctions BACK-END : 
+        -Verification si le devis est en statut Validé
+        -CRUD Projet 
+        -CRUD PHASES
+        -VIEW nombre de TACHES ACCOMPLI par tâches 
+
+    II)Affichage :
+        -Formulaire création de PHASE
+        -Indicateur avancement du projet par tâches accompli
+
+4.  Module Tâches
+    I) Métier :
+    Fonctions :
+       -CRUD TACHES
+       -CRUD SOUS TACHES
+       -Notifiaction EMAIL vers le reponsable de la tache
+
+    II)Affichage :
+        -Formualire création de tâches 
+        -Formulaire création sous tâches 
+
+    III)Intégration :
+
+
+5. Commentaires pour chaque taches 
+    I) Métier :
+    Fonctions :
+       -CRUD Commentaires sur tâche (date et heure)
+       -CRUD Commentaires sur SOUS TACHES
+       -Notifiaction EMAIL vers le reponsable de la tache
+
+    II)Affichage :
+        -Section commentaires
+      
+
+6. Ajout pièces jointes pour une tache
+    I) Métier :
+    Fonctions :
+       -Pièces jointes pdf , images 'PNG,JPG' , excel , txt 
+
+    II)Affichage :
+       -Icon epingles
+
+    
+7.Tableau de bord 
+    I) Métier :
+    Fonctions :
+       -VIEW projet en cours / terminés / en retard 
+       -VIEW devis validé / non validé 
+       -VIEW Avancement par phase 
+       -Avancement par employés 
+
+
+    II)Affichage :
+        -Diagramme camembert
+        -Diagramme en bétons 
+
+
+INSTALLATION ET REPLI DE CHANTIER
+TRAVAUX DE DEPOSE ET DEMOLITION
+TRAVAUX DE TERRASSEMENT
+TRAVAUX EN INFRASTRUCTURE
+TRAVAUX EN SUPERSTRUCTURE
+CHARPENTE - COUVERTURE  - ETANCHEITE
+ASSAINISSEMENT
+PEINTURE
+REVETEMENT - PLAFONNAGE - CLOISON
+OUVRAGE BOIS 
+MENUISERIE BOIS
+MENUISERIE ALUMINIUM 
+PLOMBERIE SANITAIRE
+ELECTRICITE
+CLIMATISATION - VMC
+AMENAGEMENT EXTERIEUR
+EQUIPEMENT ET MEUBLE DE CUISINE
+ASCENSEUR
+PEAU DE FACADE
+ENERGIE SOLAIRE
+
+
+Intégration IA 
+Tyype de devis	Description
+Devis descriptif	Décrit de façon détaillée, sans nécessairement chiffrer
+Devis quantitatif	Détaille les quantités des éléments
+Devis estimatif	Donne une estimation du coût total
+Devis forfaitaire	Propose un prix fixe pour la prestation

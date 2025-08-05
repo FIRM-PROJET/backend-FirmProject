@@ -1,0 +1,7 @@
+IDENTIFICATION EMAIL :
+    -id : firmprojet@gmail.com
+    -pass : firmprojet2000
+
+NODE EMAILER :
+    -App Id : Firm Projet App
+    -Pass : upry yhtf rvub tnjh

@@ -1,0 +1,270 @@
+To Do List (17-06-2025) : 
+    -(OK)Listes des projets 
+    -(OK)Listes types de construction(nom + description de la construction)
+    -(OK)Listes projets réferents au type de construction 
+    -(OK)Détails des projets réferents (Nombre étages,Structure,Menuiserie,Fondation,Surface Totale,Toiture,Type de plancher)
+    -(OK)Afficher le fichier excel correspondant au projet 
+
+Resultat : 
+    -Tâches à remettre au lendemain : 0
+
+To Do List (18-06-2025) : 
+    -(OK)Listes avec checkbox des designation des travaux
+    -(OK)Ajout d'un nouveau champs en sus avec insertion du montant correspondant  
+    -Lecture du fichier devis excel en tenant compte des champs en sus / 
+        -(OK)Récuperation des travaux sélectionés 
+        -(OK)Récuperation des travaux dans la section autres + montant
+        -Lecture du fichier excel , colonne(1)= Lot , colonne(2)=Nom Travaux , colonne(3)=montant
+Resultat : 
+    -Tâches à remettre au lendemain : Lecture du fichier excel , colonne(1)= Lot , colonne(2)=Nom Travaux , colonne(3)=montant
+
+To Do List (19-06-2025) : 
+    -(OK)Lecture du fichier excel , colonne(1)= Lot , colonne(2)=Nom Travaux , colonne(3)=montant    
+    -(OK)Affichage en tableau des noms des travaux sélectionés 
+    -(OK)Affichage en tableau des montants depuis excel (moyenne si plusieurs projets réferrents)
+    -(OK)Affichage en tableau des autres travaux avec montant
+    -(OK)Affichage du montant total (ariary et euro)
+
+Resultat : 
+    -Tâches à remettre au lendemain : 0
+
+To Do List (20-06-2025) : (modifié)
+    -(OK)Ajout d'une table surface-projet : Surface par m2 SHOB,SHON,SHAB
+    -(Ok)Fonction et view get surfaces projet
+    -(OK)Ajout d'un choix select SHOB , SHAB ou SHON + calcul moyenne des surfaces projet
+    -(OK)Ajout champ pour nouvelle surface 
+    -(OK)Obtention total estimation (moyenne prix par m2 + autres travaux * nouvelle surface)
+
+    -Tâches à remettre au lendemain : 0
+
+To Do List (23-06-2025) : 
+    -(OK)Recapitulatif du devis en estimation (total estimation ,type surface choisie , surface total  )
+    -(OK)Tableau recaptualitf des travaux avec chiffre en placeholder modifiable 
+    -(OK)Affichage du nouveau total avec chiffre modifié
+    -(OK)Affichage du pourcentage par rapport au nouveau total 
+    -Exportation pdf : maitre d'ouvrages , Type surface , Surface , Totale estimation , 
+    tableau details des travaux (pourcentage et montant)
+
+To Do List (24-06-2025) : 
+    -(Annulé)Modification pourcentage 
+    -(OK)Ajout champ date et champ insertion du prix ariary
+    -(OK)Affichage pourcentage inital et pourcentage actuel(modifié)
+    -(OK)Graphe pourcentage
+    -Bouton sauvegarde  du fichier devis 
+    -Ajout d'une table devis estimatif
+
+    -Tâches à remettre au lendemain : -Ajout d'une table devis estimatif Bouton sauvegarde  du fichier devis 
+
+Problèmes rencontrés : %actuel vrai et %initial faux
+    Lors d'un ajout de nouveau champ : erreur dans le calcul du pourcentage 
+
+To Do List (25-06-2025) : 
+    -(OK)Arrondissement et correction des chiffres virgules 
+    -(OK)Test et Correction
+    -(OK)Bouton sauvegarde  du fichier devis 
+    -(OK)Ajout d'une table devis estimatif
+
+To Do List (27-06-2025):
+    -(Module devis en phase de Test)
+    -Liste des utilisateurs 
+    -Ajout utilisateur Inscription :
+    - Formulaire nom + email + mot de passe 
+    -Modification mot de passe -> Inserer ancien mot de passe -> nouveau mot de passe 
+    -Mot de passe oublié , envoie code email -> nouveau mot de passe
+    
+To Do List (30-06-2025):
+    -(OK)Insertion devis réferrents projets et détails projets
+    -(OK)Ajouter fichier devis images projets 
+    -(OK)Selection des parametres
+    -(OK)SUPRRESSION UTILISATEUR avec insertion DELETE USER
+
+To Do List (01-07-2025):
+    -(Module devis en phase de Test)
+    -(OK)Insertion clients lors de l'insertion détails projets
+    -(OK)Intégration via API insrtion fichier devis et images
+    -(OK)Telechargement et Ajout de nouvelles images 
+
+To Do List (02-07-2025):
+    -Amelioration styles pages login (logo, couleurs) : 
+        -Conception du logo (couleurs , typographie)
+        -Ajout d'une page de chargement (animation du logo)
+    -Ameioration styles Nav Bar
+    -Amélioration styles Header 
+
+
+To Do List (14-07-2025):
+    (OK)-Design du module Admin: 
+        (OK)-Gestion accès
+        (OK)-Modifier Utilisateurs
+        (OK)-Ajouter Utilisateur
+
+To Do List (15-07-2025):
+    (OK)-Finalisation Design Devis
+        (OK)-Selection des travaux 
+        (OK)-Resulat des travaux 
+        (OK)-Fiche validation des travaux 
+    -Conception page Home Personnalisés (taches à faire le jour) (par jour et par mois)
+
+To Do List (16-07-2025):
+    (OK)-Exportation des données en excel , recapitulatid + total estimation 
+    (OK)-Exportation des données pdf maitre d'ouvrage , date , total finale estimation , type de surface choisie 
+    (OK)-Conception page Home Personnalisés (taches à faire le jour) (par jour et par mois)
+
+To Do List (17-07-2025):
+    (OK)-(Modif): Enregistrement brouillon 
+    (OK)-(Modif): Enregistrement avec ajout plusieurs versions 
+
+To Do List (18-07-2025):
+    (OK)-(Modif): Modification en tête pdf et excel
+    (OK)-(Modif): Enregistrement PDF avec les % 
+    (OK)-(modif):Insertion des 3 types de surface 
+
+To Do List (21-07-2025):
+    -Design du excel (Ajout logo Firm , en tete , numéro de la fiche et version montants en ariary et euro , )
+    -Design du pdf (Ajout logo Firm , en tete , numéro de la fiche et version montants en ariary et euro , )
+    -Création de la page Home : 
+        -Nom et date du jour 
+        -Calendrier des tâches (Tâches accompli , non-accompli, en cours )
+        -Activité hebdomadaire 
+    -Modification de la page insertion nouveau projet 
+
+To Do List (22-07-2025):
+    (OK)-Insertion nouveau projets
+    (OK)-Ajout nouveau projets
+    (OK)-Ajout date des phases 
+    (OK)-Affichage des phases de projets en tableau 
+    (OK)-Calendrier avec phases des projets
+
+To Do List (23-07-2025):
+    (OK)-Ajout modals pour ajouter utilisateur dans une phase projet
+    (OK)-Ajout de la verification token , si la personne a acces au module admin elle peut modifier sinon elle peut que voir 
+    (OK)-Modification de la date de chaque phase 
+    (OK)-Ajout modification et supression UNIQUEMENT ADMIN
+    
+To Do List (24-07-2025):
+    (OK)-Modification en tête pour chaque module afficher le nom du module sur header
+    (OK)-Création nouveau projet
+    (OK)-Ajout insertion nouveau client 
+    (OK)-Ajout bouton recherche sur le header 
+    (OK)-Modification affichage des phase de projet pour une meilleure visibilité 
+    
+    (OK)-Affichage de la phase actuelle su projet  
+    (OK)-Calendrier avec phases des projets
+
+
+To Do List (25-07-2025):
+    (OK)-Ajout de page de rechargement 
+    (OK)-Modification styles de la pages de connexion 
+    (OK)-Ajout fonctionnalité mot de passe oublié 
+    (OK)-Envoie de code validation pour recuperation du compte 
+
+    
+To Do List (28-07-2025):
+    (OK)-Redaction sur l'entreprise Firm & Architecture ainsi que sa fondatrice
+    (OK)-Redaction du plan détaillée
+    (OK)-Redaction page remerciments 
+    (OK)-Redaction introduction 
+
+To Do List (29-07-2025):
+    (OK)-Interface Mes tâches 
+    (OK)-Création nouvelle tâches
+    (OK)-Création sous-tâches 
+    (OK)-Ajout fichier tâches
+    (OK)-Ajout fichier sous-tâches
+    (OK)-Ajout utilisateurs pour chaque taches
+
+To Do List (30-07-2025):
+    (OK)-Affichage des taches à faire aujourd'hui 
+    (OK)-Taches en cours 
+    (OK)-Diagramme tache accompli et non accompli
+    (OK)-Affichage tache ajoutés recemment avec date ajout  
+    (OK)-Iterface Création nouvelle tâches
+    
+To Do List (31-07-2025):
+    (OK)-Interface Assigner une personne a une tache 
+    (OK)-Interface en List (A faire , En Cours , Terminé)
+    (OK)-Interface calendrier afficher les taches avec calendrier
+    (OK)-Modification statut des tâches (accompli)
+
+To Do List (01-08-2025):
+    (OK)-Modification affichage calendrier mensuel
+    (OK)-Ajouter exception si plus tache a deja atteint de 8h pourtant pour un meme utilisateur 
+         ou si il y'a deja un jour qui occupe la tache
+    (OK)-Ajout exception jour ferié et week-end
+    (OK)-Interface ajout Sous tâches
+       
+To Do List (04-08-2025):
+    (OK)-Ajout section commentaires sous tâches (edit,bold,italic,underline,small,font-size)
+    (OK)-Ajout section commentaires pour chaque taches (edit,bold,italic,underline,small,font-size)  
+    (OK)-Ajout pieces jointes sous chaque commentaires (jpeg,png,pdf)
+    (OK)-Ajouter exception si utilisateur n'a pas accès a l'ajout de la tâche
+
+To Do List (5-08-2025):
+    -Insertion pièce jointes pour une taches 
+    -Insertion pièce jointes pour un commentaire
+    -Affichage des fichiers joints 
+    
+
+To Do List (5-08-2025):
+    -Integration projet-phase au tâches accompli : Progression par phase 
+    -Ajout notifications pour chaque sous-taches ajouté
+
+
+
+
+
+    A FAIRE : 
+    (OK)-Integration envoie email lors de l'envoi de code de validation
+    (OK)-Modification styles de la pages de connexion 
+    (OK)-Ajout fonctionnalité mot de passe oublié 
+    (OK)-Envoie de code validation pour recuperation du compte 
+
+
+
+
+
+    (OK)-Modification en tête pour chaque module afficher le nom du module sur header
+    (OK)-Affichage de la phase actuelle du projet  
+    (OK)-Calendrier avec phases des projets
+
+                                                          
+2- Planning 15/07/2025 :  , Conception page Home Personnalisés (taches à faire)
+
+Gestion des utilisateur 
+ADMIN : -Accès attribué a chaque utilisateur 
+
+RESTE A FAIRE DEVIS :
+-CRUD et Liste et recherche : DEVIS REELLE PAR RAPPORT A UN PROJET (details)
+-CRUD et Liste et recherche : DEVIS ESTIMATIF 
+-AJOUT IMAGE IMAGE DU PROJETS DANS LES DETAILS 
+
+Pour la recherche de projets réferrents : 
+-Ajouter les critère du projets projets (surface, type de construction)
+-Afficher le pourcentage de ressemblance des projets par rapport au critères
+
+EXCEPTION : 
+    -Ajouter un Travaux 
+    -UX a ameliorer sur l'insertion de la nouvelle surface
+    -Exception (maitre d'ouvrage,nom du devis,cours) avant export et enregistrement
+
+Alu Grand Baie
+Alu Normal
+
+RATIO = prix par m2
+
+LIGNE 4 = Infrastructure Normale , Renforcée 4 
+LIGNE 5 = Superstructure  Beton Metallique Hybride
+LIGNE 12 = Menuiserie Grand Baie Normal 
+LIGNE 6 = Charpente Couverture : Metallique Beton
+LIGNE 13 = Plomberie
+
+
+
+Total Standard	189967.00 €
+Total Personnalisé	20000.00 €
+Prix par (m²) en euro ( €)	372.48 €
+Total Général
+210 711,969 €
+
+
+EMAIL 

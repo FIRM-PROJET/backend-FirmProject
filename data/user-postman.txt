@@ -1,0 +1,17 @@
+{
+    {
+        "nom":"Ramanantoanina",
+        "prenom":"Jean Juvence",
+        "email":"juvence.ramanantoanina@gmail.com" ,
+        "mot_de_passe":"123456",
+        "intitule_poste":"Chef de projet"
+    },
+    {
+        "nom":"Rahoeliarivahy",
+        "prenom":"Fara", 
+        "email":"fara.rahoeliarivahy@gmail.com" ,
+        "mot_de_passe":"123456",
+        "intitule_poste":"CEO"
+    }
+   
+}
