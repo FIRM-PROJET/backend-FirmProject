@@ -36,10 +36,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-        router.get("/task_files/:ref_tache", ctrl.getTacheFiles);
-        router.get("/all_files/", ctrl.getAllTacheFiles);
-        router.post("/task_files/upload",upload.single("file"),ctrl.uploadTacheFile);
-        router.get("/download_files/:filename", ctrl.downloadTacheFile);
+router.get("/task_files/:ref_tache", ctrl.getTacheFiles);
+router.get("/all_files/", ctrl.getAllTacheFiles);
+router.post("/task_files/upload", upload.single("file"), ctrl.uploadTacheFile);
+router.get("/download_files/:filename", ctrl.downloadTacheFile);
+
+router.get("/avancementParPhase", ctrl.AvancementParPhaseParProjet);
+router.get("/avancementParProjet", ctrl.AvancementGlobalParProjet);
 
 
 module.exports = router;

@@ -250,9 +250,29 @@ const downloadTacheFile = (req, res) => {
     }
   });
 };
+async function AvancementGlobalParProjet(req, res) {
+  try {
+    const data = await tacheService.getAvancementGlobalParProjet();
+    res.json(data);
+  } catch (error) {
+    res.status(500).send("Erreur serveur : " + error.message);
+  }
+}
+
+async function AvancementParPhaseParProjet(req, res) {
+  try {
+    const data = await tacheService.getAvancementParPhaseParProjet();
+    res.json(data);
+  } catch (error) {
+    res.status(500).send("Erreur serveur : " + error.message);
+  }
+}
+
 
 
 module.exports = {
+  AvancementGlobalParProjet,
+  AvancementParPhaseParProjet,
   create_tache,
   create_sous_tache,
   assign_user_tache,

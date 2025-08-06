@@ -10,7 +10,6 @@ async function calculerDateFinPrevuParId(dateDebutStr, duree, id_unite_duree) {
       jour: row.jour,
       mois: row.mois,
     }));
-
     const estFerie = (dateToCheck) => {
       return joursFeries.some(
         (ferie) =>
@@ -765,8 +764,73 @@ const add_tache_files = async (data) => {
     throw error;
   } 
 };
+async function getAvancementParPhaseParProjet() {
+  const sql = `
+    WITH dernier_statut AS (
+      SELECT DISTINCT ON (ref_tache)
+        ref_tache,
+        id_statut
+      FROM historique_statut
+      WHERE ref_tache IS NOT NULL
+      ORDER BY ref_tache, date_statut DESC
+    )
+    SELECT
+      t.ref_projet,
+      t.id_phase,
+      COUNT(*) AS total_taches,
+      COUNT(*) FILTER (WHERE ds.id_statut = 3) AS taches_terminees,
+      ROUND(100.0 * COUNT(*) FILTER (WHERE ds.id_statut = 3) / NULLIF(COUNT(*), 0), 2) AS avancement_pourcent
+    FROM tache t
+    JOIN dernier_statut ds ON ds.ref_tache = t.ref_tache
+    GROUP BY t.ref_projet, t.id_phase
+    ORDER BY t.ref_projet, t.id_phase
+  `;
+  const result = await db.query(sql);
+  return result.rows;
+}
+
+async function getAvancementGlobalParProjet() {
+  const sql = `
+    WITH dernier_statut AS (
+      SELECT DISTINCT ON (ref_tache)
+        ref_tache,
+        id_statut
+      FROM historique_statut
+      WHERE ref_tache IS NOT NULL
+      ORDER BY ref_tache, date_statut DESC
+    ),
+    avancement_phase AS (
+      SELECT
+        t.ref_projet,
+        t.id_phase,
+        COUNT(*) AS total_taches,
+        COUNT(*) FILTER (WHERE ds.id_statut = 3) AS taches_terminees,
+        ROUND(100.0 * COUNT(*) FILTER (WHERE ds.id_statut = 3) / NULLIF(COUNT(*), 0), 6) AS avancement_pourcent
+      FROM tache t
+      JOIN dernier_statut ds ON ds.ref_tache = t.ref_tache
+      GROUP BY t.ref_projet, t.id_phase
+    )
+    SELECT
+      ref_projet,
+      ROUND(
+        SUM(total_taches * avancement_pourcent) / NULLIF(SUM(total_taches), 0),
+        2
+      ) AS avancement_global_pourcent,
+      SUM(total_taches) AS total_taches_projet,
+      SUM(taches_terminees) AS taches_terminees_projet
+    FROM avancement_phase
+    GROUP BY ref_projet
+    ORDER BY ref_projet
+  `;
+  const result = await db.query(sql);
+  return result.rows;
+}
+
+
 
 module.exports = {
+  getAvancementGlobalParProjet,
+  getAvancementParPhaseParProjet,
   insert_tache,
   insert_sous_tache,
   assignerUtilisateurTache,
