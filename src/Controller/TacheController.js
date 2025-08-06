@@ -2,6 +2,8 @@ const tacheService = require("../Service/TacheService");
 const projet = require("../Service/ProjetService");
 const path = require("path");
 const multer = require("multer");
+const fs = require("fs");
+
 
 // Créer une tâche
 async function create_tache(req, res) {
@@ -185,89 +187,70 @@ async function update_statut_en_cours(req, res) {
   }
 }
 
-//TACHE FILES & DOWNLOAD
-// Stockage unique pour tous les fichiers des taches
-const tache_files_storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../files/projets"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const upload_tache_files = multer({ storage: tache_files_storage }).single("fichier");
-// Récupérer les fichiers d'une tâche
-async function upload_tache(req, res) {
-  upload_tache_files(req, res, async (err) => {
-    if (err)
-      return res.status(500).json({ error: "Erreur upload fichier projet" });
-
-    try {
-      const { ref_tache } = req.body;
-      const nom_fichier = req.file.originalname;
-      const chemin_fichier = req.file.filename;
-
-      const result = await tacheService.add_tache_files({
-        ref_tache,
-        nom_fichier,
-        chemin_fichier,
-        type_fichier,
-      });
-      res.status(201).json(result);
-    } catch (error) {
-      res.status(500).json({ error: "Erreur BDD fichier projet" });
-    }
-  });
-}
-exports.getTacheFiles = async (req, res) => {
+// Récupérer les fichiers d'une tâche spécifique
+const getTacheFiles = async (req, res) => {
   try {
     const { ref_tache } = req.params;
-    const files = await find_tache_files(ref_tache);
-    res.json(files);
-  } catch (err) {
+    const files = await tacheService.find_tache_files(ref_tache);
+    res.status(200).json(files);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des fichiers de la tâche :", error);
     res.status(500).json({ error: "Erreur serveur" });
   }
 };
 
-exports.getAllTacheFiles = async (req, res) => {
+// Récupérer tous les fichiers de toutes les tâches
+const getAllTacheFiles = async (req, res) => {
   try {
-    const files = await find_all_tache_files();
-    res.json(files);
-  } catch (err) {
+    const files = await tacheService.find_all_tache_files();
+    res.status(200).json(files);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des fichiers :", error);
     res.status(500).json({ error: "Erreur serveur" });
   }
 };
 
-exports.downloadTacheFile = (req, res) => {
-  const { filename } = req.params;
-  const filePath = path.join(__dirname, "../../files/projets", filename);
-
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) return res.status(404).json({ error: "Fichier non trouvé" });
-    res.download(filePath);
-  });
-};
-
-exports.uploadTacheFile = async (req, res) => {
+// Ajouter un fichier à une tâche
+const uploadTacheFile = async (req, res) => {
   try {
     const { ref_tache } = req.body;
     const file = req.file;
 
-    if (!file) return res.status(400).json({ error: "Aucun fichier fourni" });
+    if (!file) {
+      return res.status(400).json({ error: "Aucun fichier envoyé" });
+    }
 
     const data = {
       ref_tache,
-      nom_fichier: file.originalname,
-      chemin_fichier: file.filename,
+      nom_fichier: file.originalname, 
+      chemin_fichier: file.filename  
     };
 
-    const inserted = await upload_tache(data);
-    res.json(inserted);
-  } catch (err) {
-    res.status(500).json({ error: "Erreur d'upload" });
+    const inserted = await tacheService.add_tache_files(data);
+    res.status(201).json(inserted);
+  } catch (error) {
+    console.error("Erreur lors de l'upload du fichier :", error);
+    res.status(500).json({ error: "Erreur serveur" });
   }
 };
+
+const downloadTacheFile = (req, res) => {
+  const { filename } = req.params;
+  const filePath = path.join(__dirname, "../../files/projets", filename);
+
+  // Vérifie si le fichier existe
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: "Fichier non trouvé" });
+  }
+
+  res.download(filePath, filename, (err) => {
+    if (err) {
+      console.error("Erreur lors du téléchargement :", err);
+      res.status(500).json({ error: "Erreur lors du téléchargement" });
+    }
+  });
+};
+
 
 module.exports = {
   create_tache,
@@ -284,4 +267,8 @@ module.exports = {
   get_user_task,
   update_statut_termine,
   update_statut_en_cours,
+  getTacheFiles,
+  getAllTacheFiles,
+  uploadTacheFile,
+  downloadTacheFile
 };

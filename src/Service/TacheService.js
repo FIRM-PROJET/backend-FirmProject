@@ -763,7 +763,7 @@ const add_tache_files = async (data) => {
   } catch (error) {
     console.error("Erreur lors de l’insertion dans fichier_tache :", error);
     throw error;
-  }
+  } 
 };
 
 module.exports = {
