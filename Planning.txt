@@ -200,9 +200,19 @@ To Do List (04-08-2025):
     (OK)-Ajouter exception si utilisateur n'a pas accès a l'ajout de la tâche
 
 To Do List (5-08-2025):
-    -Insertion pièce jointes pour une taches 
-    -Insertion pièce jointes pour un commentaire
-    -Affichage des fichiers joints 
+    (OK)-Affichage uniquement des commentaires par tache
+    (OK)-Formatage des commentaires (bold,italic,underline,small,font-size)
+    (OK)-Insertion pièce jointes pour une taches 
+    (OK)-Insertion pièce jointes pour un commentaire
+    (OK)-Affichage des fichiers joints 
+
+To Do List (6-08-2025):
+    -Ajout de la possibilité de supprimer les fichiers joints
+    -Ajout de la possibilité de supprimer les commentaires
+    -Creation des alerts retards pour les tâches , les projets et les sous-tâches
+    -Alert Individuel pour chaque utilisateur
+    -Alert Commun
+
     
 
 To Do List (5-08-2025):
