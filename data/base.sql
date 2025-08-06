@@ -173,7 +173,8 @@ CREATE TABLE projet_phase (
     ref_projet VARCHAR(250) NOT NULL REFERENCES module_projet (ref_projet),
     id_phase VARCHAR(250) NOT NULL REFERENCES phases (id_phase),
     date_debut DATE,
-    date_fin DATE
+    date_fin DATE,
+    date_fin_reelle DATE
 );
 
 CREATE TABLE projet_phase_utilisateur (

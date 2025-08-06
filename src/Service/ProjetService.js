@@ -185,6 +185,24 @@ const create_details_projet = async (data) => {
     throw error;
   }
 };
+async function find_max_date_phase_by_projet(id_projet) {
+  try {
+    const id_projet_clean = id_projet.trim();
+    const sql = `
+      SELECT TO_CHAR(MAX(date_fin), 'YYYY-MM-DD') AS date_max
+FROM projet_phase
+WHERE ref_projet = $1
+
+    `;
+    const params = [id_projet_clean];
+
+    const result = await db.query(sql, params);
+    return result.rows[0]; 
+  } catch (error) {
+    console.error("Erreur lors de la récupération de la date max :", error);
+    throw error;
+  }
+}
 const add_devis_files = async (data) => {
   try {
     const { id_projet, nom_fichier, chemin_fichier } = data;
@@ -230,7 +248,7 @@ const create_client = async (data) => {
   const { rows } = await db.query(
     `INSERT INTO client(nom, email, telephone)
      VALUES($1, $2, $3) RETURNING *`,
-    [nom ,email, telephone]
+    [nom, email, telephone]
   );
   return rows[0];
 };
@@ -246,5 +264,6 @@ module.exports = {
   add_devis_files,
   add_image_files,
   create_client,
-  find_devis_files
+  find_devis_files,
+  find_max_date_phase_by_projet,
 };

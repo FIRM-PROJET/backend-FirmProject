@@ -91,5 +91,6 @@ router.post("/upload_devis", ctrl.upload_devis_file);
 router.post("/upload_image", ctrl.upload_image_file);
 router.get("/client", ctrl.get_client);
 router.post("/create_client", ctrl.create_new_client);
+router.get("/max_date_phase/:id_projet", ctrl.get_max_date_phase);
 
 module.exports = router;

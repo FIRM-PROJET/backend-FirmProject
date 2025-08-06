@@ -237,8 +237,29 @@ async function upload_image_file(req, res) {
   });
 }
 
+async function get_max_date_phase(req, res) {
+  const { id_projet } = req.params;
+  try {
+    const result = await projet.find_max_date_phase_by_projet(id_projet);
+    
+    if (result.date_max) {
+      const localDate = new Date(result.date_max);
+      const dateLocaleISO = localDate.toISOString().split("T")[0]; 
+      res.json({ date_max: dateLocaleISO });
+    } else {
+      res.json({ date_max: null });
+    }
+
+  } catch (error) {
+    res.status(500).send("Erreur serveur : " + error.message);
+  }
+}
+
+
+
 
 module.exports = {
+  get_max_date_phase,
   getAll,
   get_type_construction,
   get_project_referrent,
