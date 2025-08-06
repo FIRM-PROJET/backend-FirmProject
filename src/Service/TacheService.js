@@ -721,7 +721,7 @@ const getDureeEnHeures = (duree, id_unite_duree) => {
 };
 async function find_tache_files(ref_tache) {
   try {
-    const sql = `SELECT nom_fichier, chemin_fichier FROM fichier_tache WHERE ref_tache = $1`;
+    const sql = `SELECT id_fichier_tache,nom_fichier, chemin_fichier FROM fichier_tache WHERE ref_tache = $1`;
     const params = [ref_tache];
     
     const result = await db.query(sql, params);
@@ -735,7 +735,7 @@ async function find_tache_files(ref_tache) {
 }
 async function find_all_tache_files() {
   try {
-    const sql = `SELECT nom_fichier, chemin_fichier FROM fichier_tache`;
+    const sql = `SELECT id_fichier_tache,nom_fichier, chemin_fichier FROM fichier_tache`;
     const result = await db.query(sql);
     return result.rows;
   } catch (error) {

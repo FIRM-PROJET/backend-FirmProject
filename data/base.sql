@@ -281,7 +281,7 @@ CREATE TABLE commentaires (
     )
 );
 CREATE TABLE fichier_tache (
-    id_fichier_projet serial PRIMARY KEY,
+    id_fichier_tache serial PRIMARY KEY,
     ref_tache VARCHAR(250) NOT NULL REFERENCES tache (ref_tache),
     nom_fichier VARCHAR(100),
     chemin_fichier TEXT,
