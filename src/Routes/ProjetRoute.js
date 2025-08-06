@@ -92,5 +92,6 @@ router.post("/upload_image", ctrl.upload_image_file);
 router.get("/client", ctrl.get_client);
 router.post("/create_client", ctrl.create_new_client);
 router.get("/max_date_phase/:id_projet", ctrl.get_max_date_phase);
+router.get("/all_projet_phases", ctrl.AllProjetPhases);
 
 module.exports = router;

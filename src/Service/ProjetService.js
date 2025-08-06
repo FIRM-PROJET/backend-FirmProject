@@ -252,6 +252,31 @@ const create_client = async (data) => {
   );
   return rows[0];
 };
+async function getAllProjetPhases() {
+  try {
+    const sql = `
+      SELECT 
+        p.ref_projet,
+        p.nom_projet,
+        ph.id_phase,
+        pa.libelle_phase,
+        TO_CHAR(ph.date_debut, 'YYYY-MM-DD') AS date_debut,
+        TO_CHAR(ph.date_fin, 'YYYY-MM-DD') AS date_fin,
+        TO_CHAR(ph.date_fin_reelle, 'YYYY-MM-DD') AS date_fin_reelle
+      FROM projet_phase ph
+      JOIN module_projet p ON ph.ref_projet = p.ref_projet
+      JOIN phases pa ON ph.id_phase = pa.id_phase
+      ORDER BY p.ref_projet, ph.date_debut
+    `;
+    const result = await db.query(sql);
+    return result.rows;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des projets et phases :", error);
+    throw error;
+  }
+}
+
+
 module.exports = {
   findAll,
   listeGenerique,
@@ -266,4 +291,5 @@ module.exports = {
   create_client,
   find_devis_files,
   find_max_date_phase_by_projet,
+  getAllProjetPhases
 };

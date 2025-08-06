@@ -182,6 +182,14 @@ async function get_type_surface(req, res) {
     res.status(500).send('Erreur serveur');
   }
 }
+async function AllProjetPhases(req, res) {
+  try {
+    const projets_phase = await projet.getAllProjetPhases();
+    res.json(projets_phase);
+  } catch {
+    res.status(500).send('Erreur serveur');
+  }
+}
 
 //IMPORTATION FICHIERS DEVIS
 const devisStorage = multer.diskStorage({
@@ -280,5 +288,6 @@ module.exports = {
   upload_image_file,
   get_client,
   create_new_client,
-  get_devis_project
+  get_devis_project,
+  AllProjetPhases
 };
