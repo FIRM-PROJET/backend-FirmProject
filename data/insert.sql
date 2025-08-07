@@ -1,13 +1,13 @@
-INSERT INTO module (nom_module, description) VALUES
-('Devis', 'Module estimation de devis'),
-('Taches', 'Module gestion des taches'),
-('Projets', 'Module gestion des projets');
-('Accueil', 'Accueil');
-('Admin', 'Gestion RH des utilisateurs');
+INSERT INTO module (ref_module,nom_module, description) VALUES
+('MOD0004','Devis', 'Module estimation de devis'),
+('MOD0002','Taches', 'Module gestion des taches'),
+('MOD0003','Projets', 'Module gestion des projets'),
+('MOD0006','Phases','Module gestion des phases')
+('MOD0005','Admin', 'Gestion RH des utilisateurs');
 
 
 INSERT INTO type_construction (nom_type_construction, description) VALUES
-('Habitation','Maison individuelle(villa, pavillon, maison de plain-pied)'),
+('Logement','Maison individuelle(villa, pavillon, maison de plain-pied)'),
 ('Bureau / Tertiaire','Bureaux, Bâtiment administratif , Co-Working , Open Space'),
 ('Commerce','Magasin, Boutique, Showroom'),
 ('Industriel','Usine, Atelier, Entrepôt');
