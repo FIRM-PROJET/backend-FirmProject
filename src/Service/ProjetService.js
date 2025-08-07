@@ -260,11 +260,13 @@ async function getAllProjetPhases() {
         p.nom_projet,
         ph.id_phase,
         pa.libelle_phase,
+        c.nom,
         TO_CHAR(ph.date_debut, 'YYYY-MM-DD') AS date_debut,
         TO_CHAR(ph.date_fin, 'YYYY-MM-DD') AS date_fin,
         TO_CHAR(ph.date_fin_reelle, 'YYYY-MM-DD') AS date_fin_reelle
       FROM projet_phase ph
       JOIN module_projet p ON ph.ref_projet = p.ref_projet
+      JOIN client c ON p.id_client = c.id_client
       JOIN phases pa ON ph.id_phase = pa.id_phase
       ORDER BY p.ref_projet, ph.date_debut
     `;
