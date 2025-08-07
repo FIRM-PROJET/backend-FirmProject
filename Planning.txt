@@ -89,11 +89,10 @@ To Do List (02-07-2025):
         -Conception du logo (couleurs , typographie)
         -Ajout d'une page de chargement (animation du logo)
     -Ameioration styles Nav Bar
-    -Amélioration styles Header 
-
+    -Amélioration styles Header
 
 To Do List (14-07-2025):
-    (OK)-Design du module Admin: 
+    (OK)-Design du module Admin:
         (OK)-Gestion accès
         (OK)-Modifier Utilisateurs
         (OK)-Ajouter Utilisateur
@@ -207,13 +206,15 @@ To Do List (5-08-2025):
     (OK)-Affichage des fichiers joints 
 
 To Do List (6-08-2025):
+    (OK)-Creation des alerts retards pour les tâches , les projets et les sous-tâches
+    (OK)-Alert Individuel pour chaque utilisateur
+    (OK)-Alert Commun
+
+To Do List (7-08-2025):
+    -Nouveau module : Phase et insertion fichiers phases finales
+    -Interface affichage des phases de projet
     -Ajout de la possibilité de supprimer les fichiers joints
     -Ajout de la possibilité de supprimer les commentaires
-    -Creation des alerts retards pour les tâches , les projets et les sous-tâches
-    -Alert Individuel pour chaque utilisateur
-    -Alert Commun
-
-    
 
 To Do List (5-08-2025):
     -Integration projet-phase au tâches accompli : Progression par phase 
