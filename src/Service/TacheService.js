@@ -826,6 +826,76 @@ async function getAvancementGlobalParProjet() {
   return result.rows;
 }
 
+// Récupère toutes les tâches accomplies (id_statut = 3) pour un utilisateur donné
+const getTachesAccompliesParUtilisateur = async (matricule) => {
+  const resTaches = await db.query(`
+    SELECT DISTINCT t.*
+    FROM utilisateur_tache ut
+    JOIN tache t ON ut.ref_tache = t.ref_tache
+    JOIN (
+      SELECT ref_tache, MAX(date_statut) AS derniere_date
+      FROM historique_statut
+      WHERE id_statut = 3
+      GROUP BY ref_tache
+    ) hs ON hs.ref_tache = t.ref_tache
+    WHERE ut.matricule = $1
+  `, [matricule]);
+
+  // Sélection des sous-tâches accomplies
+  const resSousTaches = await db.query(`
+    SELECT DISTINCT st.*
+    FROM utilisateur_sous_tache ust
+    JOIN sous_tache st ON ust.ref_sous_tache = st.ref_sous_tache
+    JOIN (
+      SELECT ref_sous_tache, MAX(date_statut) AS derniere_date
+      FROM historique_statut
+      WHERE id_statut = 3
+      GROUP BY ref_sous_tache
+    ) hs ON hs.ref_sous_tache = st.ref_sous_tache
+    WHERE ust.matricule = $1
+  `, [matricule]);
+
+  return {
+    taches: resTaches.rows,
+    sous_taches: resSousTaches.rows
+  };
+};
+
+const getTachesEnCoursParUtilisateur = async (matricule) => {
+  const resTaches = await db.query(`
+    SELECT DISTINCT t.*
+    FROM utilisateur_tache ut
+    JOIN tache t ON ut.ref_tache = t.ref_tache
+    JOIN (
+      SELECT ref_tache, MAX(date_statut) AS derniere_date
+      FROM historique_statut
+      WHERE id_statut = 2
+      GROUP BY ref_tache
+    ) hs ON hs.ref_tache = t.ref_tache
+    WHERE ut.matricule = $1
+  `, [matricule]);
+
+  // Sélection des sous-tâches accomplies
+  const resSousTaches = await db.query(`
+    SELECT DISTINCT st.*
+    FROM utilisateur_sous_tache ust
+    JOIN sous_tache st ON ust.ref_sous_tache = st.ref_sous_tache
+    JOIN (
+      SELECT ref_sous_tache, MAX(date_statut) AS derniere_date
+      FROM historique_statut
+      WHERE id_statut = 2
+      GROUP BY ref_sous_tache
+    ) hs ON hs.ref_sous_tache = st.ref_sous_tache
+    WHERE ust.matricule = $1
+  `, [matricule]);
+
+  return {
+    taches: resTaches.rows,
+    sous_taches: resSousTaches.rows
+  };
+};
+
+
 
 
 module.exports = {
@@ -845,5 +915,7 @@ module.exports = {
   getSousTaches,
   find_tache_files,
   find_all_tache_files,
-  add_tache_files
+  add_tache_files,
+  getTachesAccompliesParUtilisateur,
+  getTachesEnCoursParUtilisateur
 };

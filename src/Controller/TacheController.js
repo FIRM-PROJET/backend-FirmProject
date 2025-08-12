@@ -268,6 +268,27 @@ async function AvancementParPhaseParProjet(req, res) {
   }
 }
 
+const getTachesAccomplies = async (req, res) => {
+  try {
+    const { matricule } = req.params;
+    const result = await tacheService.getTachesAccompliesParUtilisateur(matricule);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Erreur getTachesAccomplies:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+const getTachesEnCours = async (req, res) => {
+  try {
+    const { matricule } = req.params;
+    const result = await tacheService.getTachesEnCoursParUtilisateur(matricule);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Erreur getTachesAccomplies:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
 
 
 module.exports = {
@@ -290,5 +311,7 @@ module.exports = {
   getTacheFiles,
   getAllTacheFiles,
   uploadTacheFile,
-  downloadTacheFile
+  downloadTacheFile,
+  getTachesAccomplies,
+  getTachesEnCours
 };
