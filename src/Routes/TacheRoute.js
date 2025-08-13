@@ -42,6 +42,8 @@ router.get("/download_files/:filename", ctrl.downloadTacheFile);
 
 router.get("/avancementParPhase", ctrl.AvancementParPhaseParProjet);
 router.get("/avancementParProjet", ctrl.AvancementGlobalParProjet);
+router.get("/get_all_users_tache/:ref_tache", ctrl.get_all_Users_Tache);
+
 
 
 module.exports = router;

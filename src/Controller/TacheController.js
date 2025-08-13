@@ -1,4 +1,6 @@
 const tacheService = require("../Service/TacheService");
+const notificationService = require("../Service/NotificationService");
+
 const projet = require("../Service/ProjetService");
 const path = require("path");
 const multer = require("multer");
@@ -30,11 +32,30 @@ async function create_sous_tache(req, res) {
 }
 
 // Assigner un utilisateur à une tâche
-async function assign_user_tache(req, res) {
+async function assign_user_tache2(req, res) {
   try {
     const { matricule, ref_tache } = req.body;
     await tacheService.assignerUtilisateurTache(matricule, ref_tache);
     res.status(200).json({ message: "Utilisateur assigné à la tâche." });
+  } catch (error) {
+    res.status(400).json({
+      message: `Assignation refusée : ${error.message || "Erreur inconnue"}`,
+    });
+  }
+}
+
+async function assign_user_tache(req, res) {
+  try {
+    const { matricule, ref_tache } = req.body;
+
+    // Récupération du nom de la tâche
+    const tache = await tacheService.getTacheByRef(ref_tache);
+    const titre = tache?.nom_tache;
+
+    await tacheService.assignerUtilisateurTache(matricule, ref_tache);
+    await notificationService.notifyAssignmentTache(ref_tache, titre, matricule);
+
+    res.status(200).json({ message: "Utilisateur assigné à la tâche et notifié par email." });
   } catch (error) {
     res.status(400).json({
       message: `Assignation refusée : ${error.message || "Erreur inconnue"}`,
@@ -288,10 +309,21 @@ const getTachesEnCours = async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };
+const get_all_Users_Tache = async (req, res) => {
+  try {
+    const { ref_tache } = req.params;
+    const result = await tacheService.getUsersTacheAvecEmails(ref_tache);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Erreur getTachesAccomplies:', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
 
 
 
 module.exports = {
+  get_all_Users_Tache,
   AvancementGlobalParProjet,
   AvancementParPhaseParProjet,
   create_tache,
