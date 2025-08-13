@@ -298,3 +298,10 @@ CREATE TABLE fichier_finale (
     id_type_fichier VARCHAR(250) REFERENCES type_fichier (id_type_fichier)
 );
 
+CREATE TABLE notifications (
+  id SERIAL PRIMARY KEY,
+  message TEXT,
+  id_utilisateur VARCHAR(250) REFERENCES utilisateur (matricule),
+  date_creation TIMESTAMP DEFAULT NOW(),
+  expire_at TIMESTAMP
+);
