@@ -211,12 +211,19 @@ To Do List (6-08-2025):
     (OK)-Alert Commun
 
 To Do List (7-08-2025):
-    -Nouveau module : Phase et insertion fichiers phases finales
-    -Interface affichage des phases de projet
+    (OK)-Nouveau module : Phase et insertion fichiers phases finales
+    (OK)-Interface affichage des phases de projet
+    (OK)-Affichage des avancements par projets
+    (OK)-Affichage des avancements par projets
+    (OK)-Affichage avancement globale avec icones pour retard
+
+To Do List (11-08-2025):
     -Ajout de la possibilité de supprimer les fichiers joints
     -Ajout de la possibilité de supprimer les commentaires
+    -Ajout insertion fichiers phases finales
 
-To Do List (5-08-2025):
+To Do List (12-08-2025):
+    -Ameioration interface Accueil
     -Integration projet-phase au tâches accompli : Progression par phase 
     -Ajout notifications pour chaque sous-taches ajouté
 

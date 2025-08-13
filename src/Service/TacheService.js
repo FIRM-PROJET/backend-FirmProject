@@ -829,11 +829,11 @@ async function getAvancementGlobalParProjet() {
 // Récupère toutes les tâches accomplies (id_statut = 3) pour un utilisateur donné
 const getTachesAccompliesParUtilisateur = async (matricule) => {
   const resTaches = await db.query(`
-    SELECT DISTINCT t.*
+    SELECT DISTINCT t.*, hs.date_statut
     FROM utilisateur_tache ut
     JOIN tache t ON ut.ref_tache = t.ref_tache
     JOIN (
-      SELECT ref_tache, MAX(date_statut) AS derniere_date
+      SELECT ref_tache, MAX(date_statut) AS date_statut
       FROM historique_statut
       WHERE id_statut = 3
       GROUP BY ref_tache
@@ -841,13 +841,12 @@ const getTachesAccompliesParUtilisateur = async (matricule) => {
     WHERE ut.matricule = $1
   `, [matricule]);
 
-  // Sélection des sous-tâches accomplies
   const resSousTaches = await db.query(`
-    SELECT DISTINCT st.*
+    SELECT DISTINCT st.*, hs.date_statut
     FROM utilisateur_sous_tache ust
     JOIN sous_tache st ON ust.ref_sous_tache = st.ref_sous_tache
     JOIN (
-      SELECT ref_sous_tache, MAX(date_statut) AS derniere_date
+      SELECT ref_sous_tache, MAX(date_statut) AS date_statut
       FROM historique_statut
       WHERE id_statut = 3
       GROUP BY ref_sous_tache
@@ -860,6 +859,7 @@ const getTachesAccompliesParUtilisateur = async (matricule) => {
     sous_taches: resSousTaches.rows
   };
 };
+
 
 const getTachesEnCoursParUtilisateur = async (matricule) => {
   const resTaches = await db.query(`
