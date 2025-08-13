@@ -1,8 +1,10 @@
 const CommentaireService = require("../Service/CommentaireService");
+const { notifyNewComment } = require("../Service/NotificationService");
 
 const ajouterCommentaire = async (req, res) => {
   try {
     const { matricule, commentaire, ref_tache, ref_sous_tache } = req.body;
+
     // Vérifie que l'un des deux seulement est fourni
     if ((ref_tache && ref_sous_tache) || (!ref_tache && !ref_sous_tache)) {
       return res.status(400).json({
@@ -11,12 +13,24 @@ const ajouterCommentaire = async (req, res) => {
       });
     }
 
+    // Ajout du commentaire en base
     await CommentaireService.new_commentaire({
       matricule,
       commentaire,
       ref_tache: ref_tache || null,
       ref_sous_tache: ref_sous_tache || null,
     });
+
+    // **Envoi de la notification par mail après 5 secondes**
+    if (ref_tache) {
+      setTimeout(async () => {
+        try {
+          await notifyNewComment(ref_tache, matricule, commentaire);
+        } catch (err) {
+          console.error("Erreur lors de l'envoi de la notification :", err);
+        }
+      }, 5000);
+    }
 
     res.status(201).json({ message: "Commentaire ajouté avec succès." });
   } catch (error) {
@@ -54,11 +68,9 @@ const getCommentaires = async (req, res) => {
     res.status(200).json(commentaires);
   } catch (error) {
     console.error("Erreur lors de la récupération des commentaires :", error);
-    res
-      .status(500)
-      .json({
-        message: "Erreur serveur lors de la récupération des commentaires.",
-      });
+    res.status(500).json({
+      message: "Erreur serveur lors de la récupération des commentaires.",
+    });
   }
 };
 

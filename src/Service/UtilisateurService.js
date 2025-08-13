@@ -119,7 +119,19 @@ async function get_user_by_email(email) {
     );
   }
 }
-
+async function get_user_by_matricule(matricule) {
+  try {
+    const result = await db.query(
+      `SELECT * FROM utilisateur WHERE matricule = $1`,
+      [matricule]
+    );
+    return result.rows;
+  } catch (err) {
+    throw new Error(
+      "Erreur lors de la récupération des modules : " + err.message
+    );
+  }
+}
 async function updateUtilisateur(matricule, data) {
   const { nom, prenom, email, intitule_poste } = data;
 
@@ -155,5 +167,6 @@ module.exports = {
   module_user_access,
   updateUtilisateur,
   checkAncienPassword,
+  get_user_by_matricule,
   get_user_by_email,
 };

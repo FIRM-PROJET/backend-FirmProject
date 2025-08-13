@@ -860,7 +860,6 @@ const getTachesAccompliesParUtilisateur = async (matricule) => {
   };
 };
 
-
 const getTachesEnCoursParUtilisateur = async (matricule) => {
   const resTaches = await db.query(`
     SELECT DISTINCT t.*
@@ -895,10 +894,43 @@ const getTachesEnCoursParUtilisateur = async (matricule) => {
   };
 };
 
+// Récupère tous les utilisateurs assignés à une tâche avec leurs emails
+const getUsersTacheAvecEmails = async (ref_tache) => {
+  const res = await db.query(
+    `
+    SELECT 
+      u.matricule,
+      u.nom,
+      u.prenom,
+      u.email
+    FROM utilisateur_tache ut
+    JOIN utilisateur u ON ut.matricule = u.matricule
+    WHERE ut.ref_tache = $1
+    ORDER BY u.nom, u.prenom
+    `,
+    [ref_tache]
+  );
+
+  return res.rows;
+};
+
+async function getTacheByRef(ref_tache) {
+  const query = `
+    SELECT ref_tache, nom_tache, description, ref_projet, id_phase, 
+           date_debut, duree, id_unite_duree, date_fin_prevu, date_fin_reelle
+    FROM tache
+    WHERE ref_tache = $1
+  `;
+  const res = await db.query(query, [ref_tache]);
+  return res.rows[0] || null;
+}
+
 
 
 
 module.exports = {
+  getTacheByRef,
+  getUsersTacheAvecEmails,
   getAvancementGlobalParProjet,
   getAvancementParPhaseParProjet,
   insert_tache,
