@@ -2,3 +2,23 @@
 -prendre fichier bdq pour devis 
 -prendre fichier recapitulatif avancement projet 
 -prendre fichier planning journalier par personne 
+
+-RESTE A FAIRE : 
+-Ajout type de surface pour chaque projet
+-Ajour type de fichier pour chaque files dans devis 
+-Supression des notifications expirées
+-
+
+RESET DATABASE ne pas supp:
+-client
+-fondation
+-jour_ferie
+-menuiserie
+-module
+-details_projet
+-phases
+-statut
+-structure
+-toiture
+-travaux_standars
+-type_construction
