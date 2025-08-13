@@ -18,7 +18,6 @@ async function create_tache(req, res) {
       .send("Erreur lors de la création de la tâche : " + error.message);
   }
 }
-
 // Créer une sous-tâche
 async function create_sous_tache(req, res) {
   try {
@@ -31,32 +30,35 @@ async function create_sous_tache(req, res) {
   }
 }
 
-// Assigner un utilisateur à une tâche
-async function assign_user_tache2(req, res) {
-  try {
-    const { matricule, ref_tache } = req.body;
-    await tacheService.assignerUtilisateurTache(matricule, ref_tache);
-    res.status(200).json({ message: "Utilisateur assigné à la tâche." });
-  } catch (error) {
-    res.status(400).json({
-      message: `Assignation refusée : ${error.message || "Erreur inconnue"}`,
-    });
-  }
-}
-
 async function assign_user_tache(req, res) {
   try {
     const { matricule, ref_tache } = req.body;
 
     // Récupération du nom de la tâche
     const tache = await tacheService.getTacheByRef(ref_tache);
-    const titre = tache?.nom_tache;
+    if (!tache) {
+      return res.status(404).json({ message: "Tâche non trouvée." });
+    }
+    const titre = tache.nom_tache;
 
     await tacheService.assignerUtilisateurTache(matricule, ref_tache);
-    await notificationService.notifyAssignmentTache(ref_tache, titre, matricule);
+    const messageNotif = `Vous avez été assigné à la tâche "${titre}" (ref: ${ref_tache}).`;
+    const expireAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+    try {
+      await notificationService.addNotification(matricule, messageNotif, expireAt);
+    } catch (err) {
+      console.error("Erreur lors de l'ajout de la notification :", err);
+    }
 
-    res.status(200).json({ message: "Utilisateur assigné à la tâche et notifié par email." });
+    // Envoi de la notification par mail
+    try {
+      await notificationService.notifyAssignmentTache(ref_tache, titre, matricule);
+    } catch (err) {
+      console.error("Erreur lors de l'envoi de l'email :", err);
+    }
+    res.status(200).json({ message: "Utilisateur assigné à la tâche et notifié." });
   } catch (error) {
+    console.error("Erreur assign_user_tache :", error);
     res.status(400).json({
       message: `Assignation refusée : ${error.message || "Erreur inconnue"}`,
     });
@@ -85,6 +87,21 @@ async function get_tache(req, res) {
     }
     const taches = await tacheService.getTaches(ref_tache);
     res.status(200).json(taches);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur récupération tâche : " + error.message });
+  }
+}
+
+async function get_notification_user(req, res) {
+  try {
+    const { matricule } = req.params;
+    if (!matricule) {
+      return res.status(400).json({ error: "matricule est requis" });
+    }
+    const notifs = await notificationService.getNotificationsByUser(matricule);
+    res.status(200).json(notifs);
   } catch (error) {
     res
       .status(500)
@@ -323,6 +340,7 @@ const get_all_Users_Tache = async (req, res) => {
 
 
 module.exports = {
+  get_notification_user,
   get_all_Users_Tache,
   AvancementGlobalParProjet,
   AvancementParPhaseParProjet,

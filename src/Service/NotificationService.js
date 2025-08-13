@@ -1,4 +1,5 @@
-const {get_user_by_matricule} = require("./UtilisateurService");
+const db = require("../../db");
+const { get_user_by_matricule } = require("./UtilisateurService");
 const { sendEmail } = require("./EmailService");
 const { getUsersTacheAvecEmails } = require("./TacheService");
 const tacheService = require("./TacheService");
@@ -59,14 +60,16 @@ const logoURL = "https://i.imgur.com/gsmQY7P.png";
 async function notifyNewComment(ref_tache, matriculeAuteur, commentaire) {
   // Récupération de la tâche
   const tache = await tacheService.getTacheByRef(ref_tache);
-  const nomTache = tache && tache.nom_tache ? tache.nom_tache : ref_tache; 
+  const nomTache = tache && tache.nom_tache ? tache.nom_tache : ref_tache;
 
   // Récupération des utilisateurs liés à la tâche
   const utilisateurs = await getUsersTacheAvecEmails(ref_tache);
-  const emails = utilisateurs.map(u => u.email);
+  const emails = utilisateurs.map((u) => u.email);
 
   // Auteur du commentaire
-  const auteur = utilisateurs.find(u => u.matricule === matriculeAuteur)?.nom || "Un utilisateur";
+  const auteur =
+    utilisateurs.find((u) => u.matricule === matriculeAuteur)?.nom ||
+    "Un utilisateur";
 
   const subject = `Nouveau commentaire sur la tâche : ${nomTache} (ref: ${ref_tache})`;
   const text = `${auteur} a ajouté un commentaire :\n\n"${commentaire}"`;
@@ -87,11 +90,17 @@ async function notifyNewComment(ref_tache, matriculeAuteur, commentaire) {
   await sendEmail(emails, subject, text, html);
 }
 
-
 async function notifyAssignmentTache(ref_tache, titre, matricule) {
-  const utilisateur = await get_user_by_matricule(matricule);
-  if (!utilisateur || !utilisateur.email) return;
-
+  const utilisateurs = await get_user_by_matricule(matricule);
+  if (!utilisateurs || !utilisateurs.length === 0) {
+    console.warn("⚠ Aucun utilisateur trouvé");
+    return;
+  }
+  const utilisateur = utilisateurs[0];
+  if (!utilisateur.email) {
+    console.warn("⚠ Utilisateur trouvé mais email vide");
+    return;
+  }
   const subject = `Vous êtes assigné à la tâche : ${titre}`;
   const text = `Vous avez été assigné à la tâche "${titre}" (ref: ${ref_tache}).`;
   const html = `
@@ -113,4 +122,33 @@ async function notifyAssignmentTache(ref_tache, titre, matricule) {
   await sendEmail([utilisateur.email], subject, text, html);
 }
 
-module.exports = { notifyNewComment, notifyAssignmentTache };
+async function addNotification(id_utilisateur, message, expire_at = null) {
+  try {
+    const query = `
+      INSERT INTO notifications (id_utilisateur, message, expire_at)
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `;
+    const values = [id_utilisateur, message, expire_at];
+    const result = await db.query(query, values);
+    return result.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+async function getNotificationsByUser(matricule) {
+  try {
+    const result = await db.query(
+      `SELECT id, message, date_creation, expire_at
+       FROM notifications
+       WHERE id_utilisateur = $1
+       ORDER BY date_creation DESC`,
+      [matricule]
+    );
+    return result.rows;
+  } catch (err) {
+    console.error("Erreur récupération notifications :", err);
+    throw err;
+  }
+}
+module.exports = { notifyNewComment, notifyAssignmentTache ,addNotification , getNotificationsByUser };
