@@ -227,18 +227,11 @@ To Do List (12-08-2025):
     -Integration projet-phase au tâches accompli : Progression par phase 
     -Ajout notifications pour chaque sous-taches ajouté
 
-
-
-
-
     A FAIRE : 
     (OK)-Integration envoie email lors de l'envoi de code de validation
     (OK)-Modification styles de la pages de connexion 
     (OK)-Ajout fonctionnalité mot de passe oublié 
     (OK)-Envoie de code validation pour recuperation du compte 
-
-
-
 
 
     (OK)-Modification en tête pour chaque module afficher le nom du module sur header
@@ -250,37 +243,15 @@ To Do List (12-08-2025):
 
 Gestion des utilisateur 
 ADMIN : -Accès attribué a chaque utilisateur 
-
-RESTE A FAIRE DEVIS :
--CRUD et Liste et recherche : DEVIS REELLE PAR RAPPORT A UN PROJET (details)
--CRUD et Liste et recherche : DEVIS ESTIMATIF 
--AJOUT IMAGE IMAGE DU PROJETS DANS LES DETAILS 
-
-Pour la recherche de projets réferrents : 
--Ajouter les critère du projets projets (surface, type de construction)
--Afficher le pourcentage de ressemblance des projets par rapport au critères
-
-EXCEPTION : 
-    -Ajouter un Travaux 
-    -UX a ameliorer sur l'insertion de la nouvelle surface
-    -Exception (maitre d'ouvrage,nom du devis,cours) avant export et enregistrement
-
-Alu Grand Baie
-Alu Normal
-
 RATIO = prix par m2
-
 LIGNE 4 = Infrastructure Normale , Renforcée 4 
 LIGNE 5 = Superstructure  Beton Metallique Hybride
 LIGNE 12 = Menuiserie Grand Baie Normal 
 LIGNE 6 = Charpente Couverture : Metallique Beton
 LIGNE 13 = Plomberie
-
-
-
 Total Standard	189967.00 €
 Total Personnalisé	20000.00 €
-Prix par (m²) en euro ( €)	372.48 €
+Prix par (m²) en euro (€)372.48 €
 Total Général
 210 711,969 €
 

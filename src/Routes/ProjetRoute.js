@@ -21,6 +21,8 @@ router.get("/surface_projet/:id_projet", ctrl.get_surface_projet);
 router.get("/types_surfaces", ctrl.get_type_surface);
 router.post("/add", ctrl.post_create_project);
 router.post("/add_project_details", ctrl.post_create_project_details);
+//Ajout des 3 tpes de surface projet
+router.post("/add_3_surface", ctrl.post_add_surface_projet);
 // Route pour télecharger un fichier de devis
 router.get("/devisFiles/:filename", (req, res) => {
   const { filename } = req.params;

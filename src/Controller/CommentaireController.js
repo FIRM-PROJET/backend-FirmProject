@@ -3,7 +3,7 @@ const tacheService = require("../Service/TacheService");
 const UtilisateurService = require("../Service/UtilisateurService");
 const notificationService = require("../Service/NotificationService");
 
-const { notifyNewComment } = require("../Service/NotificationService");
+const { notifyNewComment,deleteNotificationIfExpired } = require("../Service/NotificationService");
 const ajouterCommentaire = async (req, res) => {
   try {
     const { matricule, commentaire, ref_tache, ref_sous_tache } = req.body;

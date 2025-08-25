@@ -92,6 +92,21 @@ async function post_create_project_details(req, res) {
     res.status(500).send('Erreur lors de l’insertion des détails : ' + err.message);
   }
 }
+async function post_add_surface_projet(req, res) {
+  try {
+    const { id_projet, surfaceSHAB, surfaceSHON, surfaceSHOB } = req.body;
+    const surface_projet = await projet.add3_surface_projet(
+      id_projet,
+      surfaceSHAB,
+      surfaceSHON,
+      surfaceSHOB
+    );
+    res.status(201).json(surface_projet);
+  } catch (err) {
+    res.status(500).send("Erreur lors de l’insertion des détails : " + err.message);
+  }
+}
+
 
 async function create_new_client(req, res) {
   try {
@@ -267,14 +282,13 @@ async function get_max_date_phase(req, res) {
 
 
 module.exports = {
+  post_add_surface_projet,
   get_max_date_phase,
   getAll,
   get_type_construction,
   get_project_referrent,
   get_files_project,
   get_project_details_by_id,
-  post_create_project,
-  post_create_project_details,
   get_fondation,
   get_menuiserie,
   get_structure,

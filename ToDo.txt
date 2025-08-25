@@ -1,7 +1,7 @@
 CAHIER DES CHARGES FONCTIONNEL
 Mise en place d’une plateforme web de suivi de projets et devis au sein de Firm Architecture
 Entreprise : Firm Architecture
-Nom de l'application : Firm Async
+Nom de l'application : Firm Projet
 
 Technologie : 
 -Front-End : React , Intégration avec API

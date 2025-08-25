@@ -137,6 +137,24 @@ const create_project = async (data) => {
     throw error;
   }
 };
+const add3_surface_projet = async (id_projet, surfaceSHAB, surfaceSHON, surfaceSHOB) => {
+  try {
+    const query = `
+      INSERT INTO surface_projet (id_projet, id_type_surface, surface)
+      VALUES 
+        ($1, 'TPS0001', $2),
+        ($1, 'TPS0002', $3),
+        ($1, 'TPS0003', $4)
+      RETURNING *;
+    `;
+    const values = [id_projet, surfaceSHAB, surfaceSHON, surfaceSHOB];
+    const result = await db.query(query, values);
+    return result.rows; 
+  } catch (error) {
+    console.error("Erreur lors de l'insertion des surfaces :", error);
+    throw error;
+  }
+};
 const create_details_projet = async (data) => {
   try {
     const {
@@ -211,8 +229,9 @@ const add_devis_files = async (data) => {
       INSERT INTO fichier_projet (
         id_projet,
         nom_fichier,
-        chemin_fichier
-      ) VALUES ($1, $2, $3)
+        chemin_fichier,
+        id_type_fichier
+      ) VALUES ($1, $2, $3,'TFI0001')
       RETURNING *
     `;
     const values = [id_projet, nom_fichier, chemin_fichier];
@@ -231,8 +250,9 @@ const add_image_files = async (data) => {
       INSERT INTO fichier_projet (
         id_projet,
         nom_fichier,
-        chemin_fichier
-      ) VALUES ($1, $2, $3)
+        chemin_fichier,
+        id_type_fichier
+      ) VALUES ($1, $2, $3,'TFI0002')
       RETURNING *
     `;
     const values = [id_projet, nom_fichier, chemin_fichier];
@@ -281,6 +301,7 @@ async function getAllProjetPhases() {
 
 module.exports = {
   findAll,
+  add3_surface_projet,
   listeGenerique,
   find_project_by_type_construction,
   find_project_files,

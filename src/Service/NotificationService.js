@@ -136,6 +136,28 @@ async function addNotification(id_utilisateur, message, expire_at = null) {
     throw error;
   }
 }
+async function deleteNotificationIfExpired() {
+  try {
+    const query = `
+      DELETE FROM notifications
+      WHERE 
+      expire_at IS NOT NULL
+      AND expire_at <= NOW()
+      RETURNING *;
+    `;
+    const result = await db.query(query, values);
+
+    // Si aucune ligne supprimée → notification encore valide ou inexistante
+    if (result.rowCount === 0) {
+      return null;
+    }
+    return result.rows[0]; 
+  } catch (error) {
+    console.error("Erreur lors de la suppression :", error);
+    throw error;
+  }
+}
+
 async function getNotificationsByUser(matricule) {
   try {
     const result = await db.query(
@@ -151,4 +173,4 @@ async function getNotificationsByUser(matricule) {
     throw err;
   }
 }
-module.exports = { notifyNewComment, notifyAssignmentTache ,addNotification , getNotificationsByUser };
+module.exports = { deleteNotificationIfExpired, notifyNewComment, notifyAssignmentTache ,addNotification , getNotificationsByUser };

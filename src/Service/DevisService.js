@@ -145,5 +145,4 @@ module.exports = {
   insertMontantTravauxStandard,
   getVueDevisComplet,
   delete_fiche_validation,getPreviousProjetReferrent
-
 };

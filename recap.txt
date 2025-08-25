@@ -4,11 +4,10 @@
 -prendre fichier planning journalier par personne 
 
 -RESTE A FAIRE : 
--Ajout type de surface pour chaque projet
--Ajour type de fichier pour chaque files dans devis 
 -Supression des notifications expirées
+-Insertion tache sans conditions
+-Suppresion projet referrent 
 -
-
 RESET DATABASE ne pas supp:
 -client
 -fondation
