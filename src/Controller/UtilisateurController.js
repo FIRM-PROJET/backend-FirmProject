@@ -15,6 +15,7 @@ async function logIn(req, res) {
       nom: user.nom,
       mot_de_passe:user.mot_de_passe,
       prenom: user.prenom,
+      intitule_poste: user.intitule_poste,
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET);
     res.json({

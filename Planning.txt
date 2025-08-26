@@ -238,8 +238,26 @@ To Do List (12-08-2025):
     (OK)-Affichage de la phase actuelle du projet  
     (OK)-Calendrier avec phases des projets
 
+PLANNING FRONT-END : 
                                                           
-2- Planning 15/07/2025 :  , Conception page Home Personnalisés (taches à faire)
+    -Planning 26/08/2025 : 
+        -Interface Header(Alert,Notification,Profile)
+        -Interface Accueil
+
+    -Planning 27/08/2025 :
+        -Interface Tâches (Ajouter une nouvelle tache)
+        -Ajout exceptions pour donner une tache 
+        -Interface Phases
+
+    -Planning 28/08/2025 :
+        -Interface Devis(ajout réferrent , liste projets)
+        -Interface Admin (Gestion des utilisateurs)
+        -Insertion prenom et ajout prenom dans le token
+
+    -Planning 29/08/2025 :
+        Interface Projets (créer un nouveau projet )
+        -Ajout insertion fichier finale pour chaque projet
+
 
 Gestion des utilisateur 
 ADMIN : -Accès attribué a chaque utilisateur 

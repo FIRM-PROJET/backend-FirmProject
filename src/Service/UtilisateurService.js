@@ -25,7 +25,7 @@ async function authenticate(email, mot_de_passe) {
   if (!passwordMatch) {
     return null;
   }
-  return new Utilisateur(utilisateur);
+  return rows[0];
 }
 
 async function checkAncienPassword(matricule, mot_de_passe) {
