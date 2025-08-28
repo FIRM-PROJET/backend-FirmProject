@@ -7,6 +7,7 @@ const path = require("path");
 router.post("/create_tache", ctrl.create_tache);
 router.post("/create_sous_tache", ctrl.create_sous_tache);
 router.post("/assign_user_tache", ctrl.assign_user_tache);
+router.post("/assign_user_tache_sans_condition", ctrl.assign_user_sans_condition);
 router.post("/assign_user_sous_tache", ctrl.assign_user_sous_tache);
 router.get("/details_taches/:ref_tache", ctrl.get_tache);
 router.get("/details_sous-taches/:ref_sous_taches",ctrl.get_details_sous_taches);
@@ -44,6 +45,7 @@ router.get("/avancementParPhase", ctrl.AvancementParPhaseParProjet);
 router.get("/avancementParProjet", ctrl.AvancementGlobalParProjet);
 router.get("/get_all_users_tache/:ref_tache", ctrl.get_all_Users_Tache);
 router.get("/notification_user/:matricule", ctrl.get_notification_user);
+
 
 
 

@@ -42,7 +42,7 @@ async function assign_user_tache(req, res) {
     const titre = tache.nom_tache;
 
     await tacheService.assignerUtilisateurTache(matricule, ref_tache);
-    const messageNotif = `Vous avez été assigné à la tâche "${titre}" (ref: ${ref_tache}).`;
+    const messageNotif = `Vous avez été assigné à la tâche "${titre}"`;
     const expireAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
     try {
       await notificationService.addNotification(matricule, messageNotif, expireAt);
@@ -71,6 +71,18 @@ async function assign_user_sous_tache(req, res) {
     const { matricule, ref_sous_tache } = req.body;
     await tacheService.assignerUtilisateurSousTache(matricule, ref_sous_tache);
     res.status(200).json({ message: "Utilisateur assigné à la sous-tâche." });
+  } catch (error) {
+    res
+      .status(500)
+      .send("Erreur assignation utilisateur sous-tâche : " + error.message);
+  }
+}
+
+async function assign_user_sans_condition(req, res) {
+  try {
+    const { matricule, ref_tache } = req.body;
+    await tacheService.assignation_sans_condition(matricule, ref_tache);
+    res.status(200).json({ message: "Utilisateur assigné à la tâche." });
   } catch (error) {
     res
       .status(500)
@@ -340,6 +352,7 @@ const get_all_Users_Tache = async (req, res) => {
 
 
 module.exports = {
+  assign_user_sans_condition,
   get_notification_user,
   get_all_Users_Tache,
   AvancementGlobalParProjet,

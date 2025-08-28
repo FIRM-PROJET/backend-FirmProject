@@ -924,11 +924,28 @@ async function getTacheByRef(ref_tache) {
   const res = await db.query(query, [ref_tache]);
   return res.rows[0] || null;
 }
+// Fonction pour insérer un utilisateur/tâche
+async function assignation_sans_condition(matricule, refTache) {
+  const query = `
+    INSERT INTO utilisateur_tache (matricule, ref_tache)
+    VALUES ($1, $2)
+    ON CONFLICT (matricule, ref_tache) DO NOTHING;
+  `;
+
+  try {
+    await db.query(query, [matricule, refTache]);
+  } catch (err) {
+    console.error("Erreur lors de l'insertion :", err);
+    throw err;
+  }
+}
+
 
 
 
 
 module.exports = {
+  assignation_sans_condition,
   getTacheByRef,
   getUsersTacheAvecEmails,
   getAvancementGlobalParProjet,
