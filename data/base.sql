@@ -251,7 +251,7 @@ CREATE TABLE utilisateur_tache (
 
 CREATE TABLE utilisateur_sous_tache (
     id SERIAL PRIMARY KEY,
-    matricule VARC
+    matricule VARCHAR,
     ref_sous_tache VARCHAR(250) REFERENCES sous_tache (ref_sous_tache),
     UNIQUE (matricule, ref_sous_tache)
 );
