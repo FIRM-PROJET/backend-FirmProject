@@ -71,7 +71,7 @@ async function notifyNewComment(ref_tache, matriculeAuteur, commentaire) {
     utilisateurs.find((u) => u.matricule === matriculeAuteur)?.nom ||
     "Un utilisateur";
 
-  const subject = `Nouveau commentaire sur la tâche : ${nomTache} (ref: ${ref_tache})`;
+  const subject = `Nouveau commentaire sur la tâche : ${nomTache}`;
   const text = `${auteur} a ajouté un commentaire :\n\n"${commentaire}"`;
   const html = `
     ${styles}

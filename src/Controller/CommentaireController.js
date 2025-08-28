@@ -29,22 +29,15 @@ const ajouterCommentaire = async (req, res) => {
       if (!tache) {
         return res.status(404).json({ message: "Tâche non trouvée." });
       }
+
       // Récupérer tous les utilisateurs assignés à la tâche
-      const utilisateurs = await tacheService.getUsersTacheAvecEmails(
-        ref_tache
-      );
+      const utilisateurs = await tacheService.getUsersTacheAvecEmails(ref_tache);
       for (const user of utilisateurs) {
-        if (user.matricule !== matricule) {
-          const messageNotif = `Un nouveau commentaire a été ajouté à la tâche "${tache.nom_tache}" par ${user.nom} , '"${commentaire}"'.`;
+          const messageNotif = `Un nouveau commentaire a été ajouté à la tâche "${tache.nom_tache}" par ${user.nom} : "${commentaire}"`;
           try {
-            await notificationService.addNotification(
-              user.matricule,
-              messageNotif,
-              expireAt
-            );
+            await notificationService.addNotification(user.matricule, messageNotif, expireAt);
           } catch (err) {
             console.error(`Erreur ajout notification pour ${user.nom}:`, err);
-          }
         }
       }
 
@@ -59,9 +52,7 @@ const ajouterCommentaire = async (req, res) => {
     res.status(201).json({ message: "Commentaire ajouté avec succès." });
   } catch (error) {
     console.error("Erreur lors de l'ajout du commentaire :", error);
-    res
-      .status(500)
-      .json({ message: "Erreur serveur lors de l'ajout du commentaire." });
+    res.status(500).json({ message: "Erreur serveur lors de l'ajout du commentaire." });
   }
 };
 
