@@ -138,11 +138,43 @@ async function delete_fiche_validation(id_fiche) {
     throw error;
   }
 }
+async function delete_projet(id_projet) {
+  try {
+    // Supprimer les dépendances
+    await db.query(
+      "DELETE FROM details_projet WHERE id_projet = $1",
+      [id_projet]
+    );
+
+    await db.query(
+      "DELETE FROM fichier_projet WHERE id_projet = $1",
+      [id_projet]
+    );
+
+    await db.query(
+      "DELETE FROM surface_projet WHERE id_projet = $1",
+      [id_projet]
+    );
+
+    // Supprimer le projet et retourner la ligne supprimée
+    const { rows } = await db.query(
+      "DELETE FROM projet WHERE id_projet = $1 RETURNING *",
+      [id_projet]
+    );
+    return rows[0];
+  } catch (error) {
+    // Annuler si erreur
+    await db.query("ROLLBACK");
+    throw error;
+  }
+}
+
 
 module.exports = {
   add_fiche_estimation_devis,
   insertTravauxCustom,
   insertMontantTravauxStandard,
   getVueDevisComplet,
+  delete_projet,
   delete_fiche_validation,getPreviousProjetReferrent
 };

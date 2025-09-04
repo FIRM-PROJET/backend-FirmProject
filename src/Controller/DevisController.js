@@ -48,6 +48,32 @@ const ajouterFicheEstimationComplete = async (req, res) => {
     });
   }
 };
+
+const deleteProjet = async (req, res) => {
+  try {
+    const { id_projet } = req.params;
+
+    if (!id_projet) {
+      return res.status(400).json({ success: false, message: "id_projet requis" });
+    }
+
+    const deleted = await devisService.delete_projet(id_projet);
+
+    if (!deleted) {
+      return res.status(404).json({ success: false, message: "Projet non trouvé" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Projet supprimé avec succès",
+      data: deleted,
+    });
+  } catch (error) {
+    console.error("Erreur suppression projet :", error);
+    res.status(500).json({ success: false, message: "Erreur serveur" });
+  }
+};
+
 const getVueDevis = async (req, res) => {
   try {
     const idFiche = req.params.id; // Récupération de l'ID depuis l'URL
@@ -162,5 +188,6 @@ module.exports = {
   ajouterFicheEstimationComplete,
   getVueDevis,
   get_all_estimation,
-  delete_fiche_validation,get_old_project
+  delete_fiche_validation,get_old_project,
+  deleteProjet
 };
