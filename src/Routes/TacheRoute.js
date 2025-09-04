@@ -25,6 +25,8 @@ router.post("/statut_en_cours", ctrl.update_statut_en_cours);
 router.get('/accomplies/:matricule', ctrl.getTachesAccomplies);
 router.get('/en_cours/:matricule', ctrl.getTachesEnCours);
 
+router.get("/taches_accomplies", ctrl.listTachesAccompliesAllUser);
+
 // Configuration de multer pour les fichiers
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

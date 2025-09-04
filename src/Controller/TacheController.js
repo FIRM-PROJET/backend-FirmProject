@@ -90,6 +90,16 @@ async function assign_user_sans_condition(req, res) {
   }
 }
 
+const listTachesAccompliesAllUser = async (req, res) => {
+  try {
+    const data = await tacheService.getAllUserTachesAccomplies();
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.error("Erreur récupération tâches accomplies :", error);
+    res.status(500).json({ success: false, message: "Erreur serveur" });
+  }
+};
+
 // Récupérer une tâche complète (avec statut et utilisateurs)
 async function get_tache(req, res) {
   try {
@@ -376,5 +386,6 @@ module.exports = {
   uploadTacheFile,
   downloadTacheFile,
   getTachesAccomplies,
-  getTachesEnCours
+  getTachesEnCours,
+  listTachesAccompliesAllUser
 };

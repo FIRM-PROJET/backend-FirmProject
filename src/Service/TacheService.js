@@ -860,6 +860,32 @@ const getTachesAccompliesParUtilisateur = async (matricule) => {
   };
 };
 
+const getAllUserTachesAccomplies = async () => {
+  const query = `
+    SELECT 
+      u.matricule,
+      u.prenom,
+      t.ref_tache,
+      t.nom_tache,
+      t.description,
+      hs.date_statut
+    FROM utilisateur_tache ut
+    JOIN utilisateur u ON ut.matricule = u.matricule
+    JOIN tache t ON ut.ref_tache = t.ref_tache
+    JOIN (
+      SELECT ref_tache, MAX(date_statut) AS date_statut
+      FROM historique_statut
+      WHERE id_statut = 3  -- accomplies
+      GROUP BY ref_tache
+    ) hs ON hs.ref_tache = t.ref_tache
+    ORDER BY u.nom, hs.date_statut DESC;
+  `;
+
+  const { rows } = await db.query(query);
+  return rows;
+};
+
+
 const getTachesEnCoursParUtilisateur = async (matricule) => {
   const resTaches = await db.query(`
     SELECT DISTINCT t.*
@@ -958,6 +984,7 @@ module.exports = {
   get_sous_tache,
   delete_tache,
   delete_sous_tache,
+  getAllUserTachesAccomplies, 
   getTachesEtSousTachesParUtilisateur,
   update_statut_termine,
   update_statut_en_cours,
