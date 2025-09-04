@@ -241,13 +241,15 @@ To Do List (12-08-2025):
 PLANNING FRONT-END : 
                                                           
     -Planning 26/08/2025 : 
-        -Interface Header(Alert,Notification,Profile)
-        -Interface Accueil
+        (OK)-Interface Header(Alert,Notification,Profile)
+        (OK)-Interface Accueil
 
     -Planning 27/08/2025 :
         -Interface Tâches (Ajouter une nouvelle tache)
         -Ajout exceptions pour donner une tache 
         -Interface Phases
+        **Comments section w\ toolbar avec toggle active 
+        **Rechargement automatique lors de close TacheModal
 
     -Planning 28/08/2025 :
         -Interface Devis(ajout réferrent , liste projets)
