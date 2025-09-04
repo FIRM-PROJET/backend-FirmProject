@@ -12,6 +12,7 @@ router.get("/phases", m_projetController.listAllPhases);
 // Phases d’un projet
 router.post("/projet_phase", m_projetController.addProjectPhase);
 router.get("/phase_projet/:ref_projet", m_projetController.listPhasesByProject);
+router.put("/phase/fin_reelle", m_projetController.updateFinReellePhase);
 
 // Utilisateurs par phase
 router.post("/add_user_phase", m_projetController.assignUserToPhase);

@@ -20,6 +20,27 @@ const addProjectPhase = async (req, res) => {
   }
 };
 
+const updateFinReellePhase = async (req, res) => {
+  try {
+    const { date_fin_reelle, ref_projet, id_phase } = req.body;
+
+    if (!date_fin_reelle || !ref_projet || !id_phase) {
+      return res.status(400).json({ error: "Champs obligatoires manquants" });
+    }
+
+    const result = await module_projet.add_fin_reelle_phase({ date_fin_reelle, ref_projet, id_phase });
+
+    if (!result) {
+      return res.status(404).json({ error: "Phase non trouvée" });
+    }
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Erreur updateFinReellePhase:", error);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+};
+
 const assignUserToPhase = async (req, res) => {
   try {
     const data = await module_projet.add_project_utilisateur(req.body);
@@ -120,4 +141,5 @@ module.exports = {
   listPhasesByProject,
   listAllProjects,
   listAllPhases,
+  updateFinReellePhase,
 };

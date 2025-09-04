@@ -39,6 +39,20 @@ const add_project_utilisateur = async (data) => {
   return rows[0];
 };
 
+// Ajouter une date reelle à une phase 
+const add_fin_reelle_phase = async (data) => {
+  const query = `
+    UPDATE projet_phase 
+    SET date_fin_reelle = $1
+    WHERE ref_projet = $2 AND id_phase = $3
+    RETURNING *;
+  `;
+  const values = [data.date_fin_reelle, data.ref_projet, data.id_phase];
+  const { rows } = await db.query(query, values);
+  return rows[0];
+};
+
+
 // Supprimer un utilisateur d’une phase d’un projet
 const delete_project_utilisateur = async (data) => {
   const query = `
@@ -120,6 +134,7 @@ const update_project_phase = async (data) => {
 
 
 module.exports = {
+  add_fin_reelle_phase,
   add_new_project,
   add_project_phase,
   add_project_utilisateur,
