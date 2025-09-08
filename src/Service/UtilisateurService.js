@@ -4,7 +4,7 @@ const Utilisateur = require("../Model/Utilisateur");
 
 async function findAll() {
   const { rows } = await db.query("SELECT * FROM utilisateur");
-  return rows.map((users) => new Utilisateur(users));
+  return rows;
 }
 
 async function authenticate(email, mot_de_passe) {

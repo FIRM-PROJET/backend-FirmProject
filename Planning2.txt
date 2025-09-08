@@ -8,8 +8,10 @@ Réctification sur l'app existant :
     2.Ajout grisatre sur les travaux non-existant sur un des projets réferrents choisie (pour indiquer que il n'ya pas ce travaux sur le projet choisi)
     (OK)*3.Enlever date_fin reelle date prévue sur devis 
     (OK)*4.Ajout type de structure mixte 
-    *5.Ajout titre "DEVIS ESTIMATIF" sur le devis
-    *6.Ajout dashboards hebdomadaire pour manager avec son équipe et admin principle
+    (OK)*5.Ajout titre "DEVIS ESTIMATIF" sur le devis
+    6.Ajout dashboards hebdomadaire pour manager avec son équipe et admin principle
+    8.Ajout image par personne 
+
 
 Nouvelle fonctionnalité (Nouveau module Vérification) : 
     1.Statut tache automatique "En cours" quand un utilisateur commence une sous tâche
@@ -20,7 +22,6 @@ Nouvelle fonctionnalité (Nouveau module Vérification) :
     6.Ajout Sécurité , uniquement les managers peuvent créer , modifier , supprimer les tâches et projets qu'ils ont créés
     (les managers voient et peuvent ajouter une sous tâches)
     7.Ajout temps passé par sous tâche avant la confirmation de teminé la sous tâche
-    8.Ajout image par personne 
 
     Module Vérification et évaluation
     A chaque sous tâche terminé : 
