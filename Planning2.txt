@@ -1,0 +1,32 @@
+Problème/Bug : 
+    (OK) 1.Ajout d'un nouveau projet réferrent 
+    (OK)2.Ajout et assignation d'une nouvelle tâche
+    (OK)3.Gestion erreur et message dans tâche 
+    (OK)4.Ajout Sécurité sur 
+
+Réctification sur l'app existant : 
+    1.Ajout des lots dans le excel , Maconnerie, Cheminée , Sécurité incendie, clôture, piscine ...
+    2.Ajout grisatre sur les travaux non-existant sur un des projets réferrents choisie (pour indiquer que il n'ya pas ce travaux sur le projet choisi)
+    3.Enlever date_fin reelle date prévue sur devis 
+    4.Ajout type de structure mixte 
+    5.Ajout titre "DEVIS ESTIMATIF" sur le devis
+    6.Ajout dashboards hebdomadaire pour manager avec son équipe et admin principle
+
+Nouvelle fonctionnalité (Nouveau module Vérification) : 
+    1.Ajout Admin supême , Ajout Manager et Ajout Utilisateur dans chaque groupe (Conception , Bureau d'Etude , Chantier et Adminisitration)
+    2.Ajout Sécurité , uniquement l'admin suprême peut ajouter un manager et un utilisateur
+    3.Ajout Sécurité , uniquement les managers peuvent créer , modifier , supprimer les tâches et projets qu'ils ont créés
+    (les managers voient et peuvent ajouter une sous tâches)
+    4.Ajout temps passé par sous tâche avant la confirmation de teminé la sous tâche
+
+    Module Vérification et évaluation
+    A chaque sous tâche terminé : 
+        -Il y'a la possibilité de voir pour les managers la verification de la sous tâche et de l'évaluer / nombre de tâche 
+        -Verification par tâche : 
+            -Tout les sous taches des collaborateurs 
+            -Sous-tache redirection vers le fichiers de la sous tâche
+            -Check-box par sous-tache
+            -Total Evaluation par nombre de sous tâche    
+
+Ajout récapitulatif heure passé et évaluation tous les mois au Admin suprême 
+Ajout récapitulatif heure passé et évaluation 1 fois dans la semaine au Manager

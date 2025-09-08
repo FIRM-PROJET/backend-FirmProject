@@ -167,7 +167,6 @@ const insert_sous_tache = async ({
   return ref_sous_tache;
 };
 
-
 const update_statut = async ({ ref_tache, ref_sous_tache }, statut_id) => {
   let query;
   let values;
@@ -294,10 +293,9 @@ const getSousTaches = async (ref_sous_taches) => {
 };
 
 const get_sous_tache = async (ref_tache) => {
-  const res = await db.query(
-    `SELECT * FROM sous_tache WHERE ref_tache = $1`,
-    [ref_tache]
-  );
+  const res = await db.query(`SELECT * FROM sous_tache WHERE ref_tache = $1`, [
+    ref_tache,
+  ]);
   const sousTaches = res.rows;
   // Ajouter le statut à chaque sous-tâche
   for (const sous of sousTaches) {
@@ -340,6 +338,30 @@ const getUsersSousTache = async (ref_sous_tache) => {
 const delete_tache = async (ref_tache) => {
   try {
     await db.query("BEGIN");
+
+    // Supprimer l'historique statut des sous-tâches liées à la tâche
+    await db.query(
+      `
+      DELETE FROM historique_statut
+      WHERE ref_sous_tache IN (
+        SELECT ref_sous_tache FROM sous_tache WHERE ref_tache = $1
+      )
+    `,
+      [ref_tache]
+    );
+    await db.query(`DELETE FROM historique_statut WHERE ref_tache = $1`, [
+      ref_tache,
+    ]);
+    await db.query(`DELETE FROM tache WHERE ref_tache = $1`, [ref_tache]);
+    await db.query("COMMIT");
+  } catch (error) {
+    await db.query("ROLLBACK");
+    throw error;
+  }
+};
+const delete_tache_foreign = async (ref_tache) => {
+  try {
+    await db.query("BEGIN");
     // Supprimer les assignations utilisateurs sous-tâches des sous-tâches liées à la tâche
     await db.query(
       `
@@ -361,6 +383,12 @@ const delete_tache = async (ref_tache) => {
       [ref_tache]
     );
     await db.query(`DELETE FROM sous_tache WHERE ref_tache = $1`, [ref_tache]);
+    await db.query(`DELETE FROM commentaires WHERE ref_tache = $1`, [
+      ref_tache,
+    ]);
+    await db.query(`DELETE FROM fichier_tache WHERE ref_tache = $1`, [
+      ref_tache,
+    ]);
     await db.query(`DELETE FROM utilisateur_tache WHERE ref_tache = $1`, [
       ref_tache,
     ]);
@@ -684,7 +712,7 @@ const assignerUtilisateurTache = async (matricule, ref_tache) => {
     if (totalPropose > 8) {
       const dateFr = new Date(jour).toLocaleDateString("fr-FR");
       throw new Error(
-        `Assignation refusée : ${heuresExistantes}h déjà allouées. Changez la date ou l’utilisateur.`
+        `Assignation refusée : ${heuresExistantes}h déjà allouées. Changez la date ou l’utilisateur , ou cochez Exception.`
       );
     }
   }
@@ -722,7 +750,7 @@ async function find_tache_files(ref_tache) {
   try {
     const sql = `SELECT id_fichier_tache,nom_fichier, chemin_fichier FROM fichier_tache WHERE ref_tache = $1`;
     const params = [ref_tache];
-    
+
     const result = await db.query(sql, params);
     return result.rows;
   } catch (error) {
@@ -762,7 +790,7 @@ const add_tache_files = async (data) => {
   } catch (error) {
     console.error("Erreur lors de l’insertion dans fichier_tache :", error);
     throw error;
-  } 
+  }
 };
 async function getAvancementParPhaseParProjet() {
   const sql = `
@@ -828,7 +856,8 @@ async function getAvancementGlobalParProjet() {
 
 // Récupère toutes les tâches accomplies (id_statut = 3) pour un utilisateur donné
 const getTachesAccompliesParUtilisateur = async (matricule) => {
-  const resTaches = await db.query(`
+  const resTaches = await db.query(
+    `
     SELECT DISTINCT t.*, hs.date_statut
     FROM utilisateur_tache ut
     JOIN tache t ON ut.ref_tache = t.ref_tache
@@ -839,9 +868,12 @@ const getTachesAccompliesParUtilisateur = async (matricule) => {
       GROUP BY ref_tache
     ) hs ON hs.ref_tache = t.ref_tache
     WHERE ut.matricule = $1
-  `, [matricule]);
+  `,
+    [matricule]
+  );
 
-  const resSousTaches = await db.query(`
+  const resSousTaches = await db.query(
+    `
     SELECT DISTINCT st.*, hs.date_statut
     FROM utilisateur_sous_tache ust
     JOIN sous_tache st ON ust.ref_sous_tache = st.ref_sous_tache
@@ -852,11 +884,13 @@ const getTachesAccompliesParUtilisateur = async (matricule) => {
       GROUP BY ref_sous_tache
     ) hs ON hs.ref_sous_tache = st.ref_sous_tache
     WHERE ust.matricule = $1
-  `, [matricule]);
+  `,
+    [matricule]
+  );
 
   return {
     taches: resTaches.rows,
-    sous_taches: resSousTaches.rows
+    sous_taches: resSousTaches.rows,
   };
 };
 
@@ -885,9 +919,9 @@ const getAllUserTachesAccomplies = async () => {
   return rows;
 };
 
-
 const getTachesEnCoursParUtilisateur = async (matricule) => {
-  const resTaches = await db.query(`
+  const resTaches = await db.query(
+    `
     SELECT DISTINCT t.*
     FROM utilisateur_tache ut
     JOIN tache t ON ut.ref_tache = t.ref_tache
@@ -898,10 +932,13 @@ const getTachesEnCoursParUtilisateur = async (matricule) => {
       GROUP BY ref_tache
     ) hs ON hs.ref_tache = t.ref_tache
     WHERE ut.matricule = $1
-  `, [matricule]);
+  `,
+    [matricule]
+  );
 
   // Sélection des sous-tâches accomplies
-  const resSousTaches = await db.query(`
+  const resSousTaches = await db.query(
+    `
     SELECT DISTINCT st.*
     FROM utilisateur_sous_tache ust
     JOIN sous_tache st ON ust.ref_sous_tache = st.ref_sous_tache
@@ -912,11 +949,13 @@ const getTachesEnCoursParUtilisateur = async (matricule) => {
       GROUP BY ref_sous_tache
     ) hs ON hs.ref_sous_tache = st.ref_sous_tache
     WHERE ust.matricule = $1
-  `, [matricule]);
+  `,
+    [matricule]
+  );
 
   return {
     taches: resTaches.rows,
-    sous_taches: resSousTaches.rows
+    sous_taches: resSousTaches.rows,
   };
 };
 
@@ -966,10 +1005,6 @@ async function assignation_sans_condition(matricule, refTache) {
   }
 }
 
-
-
-
-
 module.exports = {
   assignation_sans_condition,
   getTacheByRef,
@@ -983,8 +1018,9 @@ module.exports = {
   getTaches,
   get_sous_tache,
   delete_tache,
+  delete_tache_foreign,
   delete_sous_tache,
-  getAllUserTachesAccomplies, 
+  getAllUserTachesAccomplies,
   getTachesEtSousTachesParUtilisateur,
   update_statut_termine,
   update_statut_en_cours,
@@ -993,5 +1029,5 @@ module.exports = {
   find_all_tache_files,
   add_tache_files,
   getTachesAccompliesParUtilisateur,
-  getTachesEnCoursParUtilisateur
+  getTachesEnCoursParUtilisateur,
 };

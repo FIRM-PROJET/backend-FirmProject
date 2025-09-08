@@ -159,6 +159,19 @@ async function delete_tache_controller(req, res) {
       .json({ error: "Erreur lors de la suppression : " + error.message });
   }
 }
+async function delete_tache_complete(req, res) {
+  try {
+    const { ref_tache } = req.params;
+    await tacheService.delete_tache_foreign(ref_tache);
+    res
+      .status(200)
+      .json({ message: "Tâche et toutes ses dépendances supprimées." });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la suppression : " + error.message });
+  }
+}
 async function delete_sous_tache_controller(req, res) {
   try {
     const { ref_sous_tache } = req.params;
@@ -387,5 +400,6 @@ module.exports = {
   downloadTacheFile,
   getTachesAccomplies,
   getTachesEnCours,
+  delete_tache_complete,
   listTachesAccompliesAllUser
 };

@@ -16,10 +16,8 @@ router.get("/", ctrl.get_all_taches);
 router.get("/sous_tache/:ref_tache", ctrl.get_all_sous_tache);
 router.get("/unite_duree", ctrl.get_all_unite);
 router.delete("/delete_taches/:ref_tache", ctrl.delete_tache_controller);
-router.delete(
-  "/delete_sous-taches/:ref_sous_tache",
-  ctrl.delete_sous_tache_controller
-);
+router.delete("/delete_taches_definitivement/:ref_tache", ctrl.delete_tache_complete);
+router.delete("/delete_sous-taches/:ref_sous_tache",ctrl.delete_sous_tache_controller);
 router.post("/statut_termine", ctrl.update_statut_termine);
 router.post("/statut_en_cours", ctrl.update_statut_en_cours);
 router.get('/accomplies/:matricule', ctrl.getTachesAccomplies);
