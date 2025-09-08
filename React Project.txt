@@ -1,0 +1,35 @@
+npm install jwt-decode
+npx create-react-app frontend-firm_project
+npm start
+
+Import logo fontawesome
+npm install @fortawesome/react-fontawesome @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons
+Cryptage du mot de passe : bcrypt
+Lecture du fichier excel : npm install xlsx
+Exportation pdf : npm install html2pdf.js
+Importation fichiers : npm install multer
+
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1",
+    "pg": "^8.16.0",
+    "xlsx": "^0.18.5"
+npm install react icones
+npm install bootstrap-icons
+Nodemailer
+
+npm install nodemailer dotenv
+
+# Les autres dépendances devraient déjà être installées :
+# @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
+
+Upload fichier : Bibliothèque Multer 
+Edition commentaires : Editeur WYSIWYG : TipTap 
+
+npm install @tiptap/react @tiptap/pm @tiptap/starter-kit
+npm install @tiptap/extension-text-style @tiptap/extension-color @tiptap/extension-highlight @tiptap/extension-underline @tiptap/extension-link @tiptap/extension-image @tiptap/extension-table @tiptap/extension-table-row @tiptap/extension-table-header @tiptap/extension-table-cell
+
+Photo de profil email : Gravatar
+npm install react-gravatar
+
+npm install crypto-js

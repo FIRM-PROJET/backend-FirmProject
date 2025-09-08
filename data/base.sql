@@ -47,9 +47,7 @@ CREATE TABLE projet (
     id_type_construction VARCHAR(250) NOT NULL REFERENCES type_construction (id_type_construction),
     total_ht DECIMAL,
     total_ttc DECIMAL,
-    date_debut DATE,
-    date_fin_prevu DATE,
-    date_fin_reel DATE
+    date_devis DATE
 );
 
 CREATE TABLE structure (

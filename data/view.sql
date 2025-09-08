@@ -22,12 +22,11 @@ SELECT
     tc.nom_type_construction,
     p.total_ht,
     p.total_ttc,
-    p.date_debut,
-    p.date_fin_prevu,
-    p.date_fin_reel
+    p.date_devis
 FROM projet p
 JOIN client c ON p.id_client = c.id_client
 JOIN type_construction tc ON p.id_type_construction = tc.id_type_construction;
+
 
 --VIEW DESCRIPTION PROJET 
 CREATE VIEW v_desc_detail_projet AS

@@ -100,9 +100,7 @@ const create_project = async (data) => {
       id_type_construction,
       total_ht,
       total_ttc,
-      date_debut,
-      date_fin_prevu,
-      date_fin_reel,
+      date_devis
     } = data;
 
     const query = `
@@ -113,10 +111,8 @@ const create_project = async (data) => {
         id_type_construction,
         total_ht,
         total_ttc,
-        date_debut,
-        date_fin_prevu,
-        date_fin_reel
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        date_devis
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *
     `;
     const values = [
@@ -126,9 +122,7 @@ const create_project = async (data) => {
       id_type_construction,
       total_ht,
       total_ttc,
-      date_debut,
-      date_fin_prevu,
-      date_fin_reel,
+      date_devis
     ];
     const result = await db.query(query, values);
     return result.rows[0];
