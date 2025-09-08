@@ -6,8 +6,8 @@ Problème/Bug :
 Réctification sur l'app existant : 
     1.Ajout des lots dans le excel , Maconnerie, Cheminée , Sécurité incendie, clôture, piscine ...
     2.Ajout grisatre sur les travaux non-existant sur un des projets réferrents choisie (pour indiquer que il n'ya pas ce travaux sur le projet choisi)
-    *3.Enlever date_fin reelle date prévue sur devis 
-    *4.Ajout type de structure mixte 
+    (OK)*3.Enlever date_fin reelle date prévue sur devis 
+    (OK)*4.Ajout type de structure mixte 
     *5.Ajout titre "DEVIS ESTIMATIF" sur le devis
     *6.Ajout dashboards hebdomadaire pour manager avec son équipe et admin principle
 

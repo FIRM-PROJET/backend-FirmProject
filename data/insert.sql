@@ -15,6 +15,7 @@ INSERT INTO type_construction (nom_type_construction, description) VALUES
 INSERT INTO structure (nom, description) VALUES
 ('Béton armé', 'Bâtiment avec une structure en béton armé'),
 ('Métallique', 'Bâtiment avec une structure métallique'),
+('Mixte', 'Bâtiment avec une structure mixte (béton et métal)'),
 ('Bois', 'Bâtiment avec une structure en bois');
 
 INSERT INTO toiture (nom, description) VALUES
