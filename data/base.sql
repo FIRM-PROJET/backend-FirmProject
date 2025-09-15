@@ -4,7 +4,6 @@ WITH
 
 \c firm_project;
 
---Module Accès Utilisateur
 CREATE TABLE utilisateur (
     matricule VARCHAR(250) PRIMARY KEY,
     nom VARCHAR(100),
@@ -25,7 +24,6 @@ CREATE TABLE module_access (
     matricule VARCHAR(250) REFERENCES utilisateur (matricule)
 );
 
---Module Devis
 CREATE TABLE client (
     id_client VARCHAR(250) PRIMARY KEY,
     nom VARCHAR(100),
@@ -47,7 +45,8 @@ CREATE TABLE projet (
     id_type_construction VARCHAR(250) NOT NULL REFERENCES type_construction (id_type_construction),
     total_ht DECIMAL,
     total_ttc DECIMAL,
-    date_devis DATE
+    date_devis DATE,
+    localisation TEXT
 );
 
 CREATE TABLE structure (
@@ -152,7 +151,18 @@ CREATE TABLE montant_travaux_devis (
     montant_travaux DECIMAL
 );
 
---Module Projets
+CREATE TABLE tache (
+    ref_tache VARCHAR(250) PRIMARY KEY,
+    nom_tache VARCHAR(250),
+    description TEXT,
+    ref_projet VARCHAR(250) NOT NULL REFERENCES module_projet (ref_projet),
+    id_phase VARCHAR(250) NOT NULL REFERENCES phases (id_phase),
+    date_debut DATE,
+    duree DECIMAL,
+    id_unite_duree INT REFERENCES unite_duree (id_unite_duree),
+    date_fin_prevu DATE,
+    date_fin_reelle DATE
+);
 CREATE TABLE module_projet (
     ref_projet VARCHAR(250) PRIMARY KEY,
     nom_projet TEXT,
@@ -215,18 +225,6 @@ CREATE TABLE historique_statut (
     )
 );
 
-CREATE TABLE tache (
-    ref_tache VARCHAR(250) PRIMARY KEY,
-    nom_tache VARCHAR(250),
-    description TEXT,
-    ref_projet VARCHAR(250) NOT NULL REFERENCES module_projet (ref_projet),
-    id_phase VARCHAR(250) NOT NULL REFERENCES phases (id_phase),
-    date_debut DATE,
-    duree DECIMAL,
-    id_unite_duree INT REFERENCES unite_duree (id_unite_duree),
-    date_fin_prevu DATE,
-    date_fin_reelle DATE
-);
 
 CREATE TABLE sous_tache (
     ref_sous_tache VARCHAR(250) PRIMARY KEY,
@@ -234,7 +232,7 @@ CREATE TABLE sous_tache (
     description TEXT,
     ref_tache VARCHAR(250) NOT NULL REFERENCES tache (ref_tache),
     date_debut DATE,
-    duree DEHAR(250) REFERENCES utilisateur (matricule),CIMAL,
+    duree DECIMAL,
     id_unite_duree INT REFERENCES unite_duree (id_unite_duree),
     date_fin_prevu DATE,
     date_fin_reelle DATE
@@ -287,19 +285,11 @@ CREATE TABLE fichier_tache (
     date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_type_fichier VARCHAR(250) REFERENCES type_fichier (id_type_fichier)
 );
-CREATE TABLE fichier_finale (
-    id_fichier_tache serial PRIMARY KEY,
-    ref_tache VARCHAR(250) NOT NULL REFERENCES tache (ref_tache),
-    nom_fichier VARCHAR(100),
-    chemin_fichier TEXT,
-    date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    id_type_fichier VARCHAR(250) REFERENCES type_fichier (id_type_fichier)
-);
 
 CREATE TABLE notifications (
   id SERIAL PRIMARY KEY,
   message TEXT,
   id_utilisateur VARCHAR(250) REFERENCES utilisateur (matricule),
-  date_creation TIMESTAMP DEFAULT NOW(),
+  date_creation     TIMESTAMP DEFAULT NOW(),
   expire_at TIMESTAMP
 );

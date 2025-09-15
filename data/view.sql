@@ -11,6 +11,7 @@ JOIN
     module m ON ma.ref_module = m.ref_module;
 
 --VIEW DESCRIPTION PROJET 
+
 CREATE VIEW v_desc_projet AS
 SELECT 
     p.id_projet,
@@ -22,7 +23,8 @@ SELECT
     tc.nom_type_construction,
     p.total_ht,
     p.total_ttc,
-    p.date_devis
+    p.date_devis,
+    p.localisation
 FROM projet p
 JOIN client c ON p.id_client = c.id_client
 JOIN type_construction tc ON p.id_type_construction = tc.id_type_construction;

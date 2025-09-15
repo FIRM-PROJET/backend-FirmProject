@@ -4,16 +4,16 @@ Problème/Bug :
     (OK)3.Gestion erreur et message dans tâche 
 
 Réctification sur l'app existant : 
-    1.Ajout des lots dans le excel , Maconnerie, Cheminée , Sécurité incendie, clôture, piscine ...
-    2.Ajout grisatre sur les travaux non-existant sur un des projets réferrents choisie (pour indiquer que il n'ya pas ce travaux sur le projet choisi)
+    (OK)1.Ajout des lots dans le excel , Maconnerie, Cheminée , Sécurité incendie, clôture, piscine ...
+    (OK)2.Ajout grisatre sur les travaux non-existant sur un des projets réferrents choisie (pour indiquer que il n'ya pas ce travaux sur le projet choisi)
     (OK)*3.Enlever date_fin reelle date prévue sur devis 
     (OK)*4.Ajout type de structure mixte 
     (OK)*5.Ajout titre "DEVIS ESTIMATIF" sur le devis
-    6.Ajout dashboards hebdomadaire pour manager avec son équipe et admin principle
-    8.Ajout image par personne 
-
+    (OK)6.Ajout dashboards hebdomadaire pour manager avec son équipe et admin principle
+    (OK)8.Ajout image par personne 
 
 Nouvelle fonctionnalité (Nouveau module Vérification) : 
+    1.Ajout 
     1.Statut tache automatique "En cours" quand un utilisateur commence une sous tâche
     2.Statut tache automatique "A vérifier" quand un utilisateur a terminé une sous tâche
     3.Statut tache automatique "Terminé" quand un manager a valider toutes les sous tâche de la tâche
@@ -34,3 +34,8 @@ Nouvelle fonctionnalité (Nouveau module Vérification) :
 
 Ajout récapitulatif heure passé et évaluation tous les mois au Admin suprême 
 Ajout récapitulatif heure passé et évaluation 1 fois dans la semaine au Manager
+
+
+Derniers checks : 
+1.Suppression des notificiations expirés
+

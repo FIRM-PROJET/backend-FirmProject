@@ -44,27 +44,6 @@ INSERT INTO type_surface (nom, description) VALUES
 ('Surface SHON', 'Surface hors-oeuvre nette'),
 ('Surface SHOB', 'Surface hors-oeuvre brute');
 
--- INSERT INTO projet (
---   nom_projet,
---   description,
---   id_client,
---   id_type_construction,
---   total_ht,
---   total_ttc,
---   date_debut,
---   date_fin_prevu,
---   date_fin_reel
--- ) VALUES (
---   'Construction Bureau SCIM',
---   'Construction d''un bureau pour la société SCIM',
---   'CLI0001',  
---   'TPC0002', 
---   2982378539.00,
---   3578854247.00,
---   '2024-07-01',
---   '2024-12-31',
---   NULL
--- );
 INSERT INTO travaux_standards (id_travaux, nom_travaux) VALUES
 (1, 'Installation et repli de chantier'),
 (2, 'Travaux de dépose et démolition'),
