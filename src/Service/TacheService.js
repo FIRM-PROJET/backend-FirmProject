@@ -116,6 +116,22 @@ const insert_tache = async ({
 
   return ref_tache;
 };
+
+const insert_temps_tache = async ({ ref_tache, temps_passe_minutes}) => {
+  const query = `
+    INSERT INTO temps_tache (ref_tache, temps_passe_minutes)
+    VALUES ($1, $2)
+    RETURNING ref_tache;
+  `;
+
+  const values = [ref_tache, temps_passe_minutes];
+
+  const result = await db.query(query, values);
+  return result.rows[0].ref_tache;
+};
+
+
+
 const insert_sous_tache = async ({
   nom_sous_tache,
   description,
@@ -240,9 +256,8 @@ const getUsersTache = async (ref_tache) => {
   return res.rows;
 };
 
-const getTaches = async () => {
-  const res = await db.query(
-    `
+const getTaches = async () => { 
+  const res = await db.query(`
     SELECT 
       t.*,
       TO_CHAR(t.date_debut, 'YYYY-MM-DD') AS date_debut,
@@ -250,13 +265,14 @@ const getTaches = async () => {
       TO_CHAR(t.date_fin_reelle, 'YYYY-MM-DD') AS date_fin_reelle,
       u.nom_unite,
       p.nom_projet,
-      ph.libelle_phase
+      ph.libelle_phase,
+      COALESCE(tt.temps_passe_minutes, 0) / 60.0 AS temps_passe_heures
     FROM tache t
     LEFT JOIN unite_duree u ON t.id_unite_duree = u.id_unite_duree
     LEFT JOIN module_projet p ON t.ref_projet = p.ref_projet
     LEFT JOIN phases ph ON t.id_phase = ph.id_phase
-    `
-  );
+    LEFT JOIN temps_tache tt ON t.ref_tache = tt.ref_tache
+  `);
 
   const taches = await Promise.all(
     res.rows.map(async (details) => {
@@ -268,6 +284,7 @@ const getTaches = async () => {
 
   return taches;
 };
+
 
 // Récupère les sous-tâches, avec leur statut et leurs utilisateurs
 const getSousTaches = async (ref_sous_taches) => {
@@ -1005,7 +1022,35 @@ async function assignation_sans_condition(matricule, refTache) {
   }
 }
 
+async function heuresParPhase() {
+  try {
+    const query = `
+      SELECT 
+          t.ref_projet,
+          p.id_phase,
+          p.libelle_phase,
+          SUM(tt.temps_passe_minutes) / 60.0 AS total_heures
+      FROM 
+          temps_tache tt
+      JOIN 
+          tache t ON tt.ref_tache = t.ref_tache
+      JOIN 
+          phases p ON t.id_phase = p.id_phase
+      GROUP BY 
+          t.ref_projet, p.id_phase, p.libelle_phase
+      ORDER BY 
+          t.ref_projet ASC, total_heures DESC;
+    `;
+    const { rows } = await db.query(query);
+    return rows;
+  } catch (err) {
+    console.error("Erreur lors de la récupération des heures par phase :", err);
+    throw err;
+  }
+}
+
 module.exports = {
+  heuresParPhase,
   assignation_sans_condition,
   getTacheByRef,
   getUsersTacheAvecEmails,
@@ -1030,4 +1075,5 @@ module.exports = {
   add_tache_files,
   getTachesAccompliesParUtilisateur,
   getTachesEnCoursParUtilisateur,
+  insert_temps_tache,
 };

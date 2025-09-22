@@ -6,7 +6,6 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 
-
 // Créer une tâche
 async function create_tache(req, res) {
   try {
@@ -45,18 +44,28 @@ async function assign_user_tache(req, res) {
     const messageNotif = `Vous avez été assigné à la tâche "${titre}"`;
     const expireAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
     try {
-      await notificationService.addNotification(matricule, messageNotif, expireAt);
+      await notificationService.addNotification(
+        matricule,
+        messageNotif,
+        expireAt
+      );
     } catch (err) {
       console.error("Erreur lors de l'ajout de la notification :", err);
     }
 
     // Envoi de la notification par mail
     try {
-      await notificationService.notifyAssignmentTache(ref_tache, titre, matricule);
+      await notificationService.notifyAssignmentTache(
+        ref_tache,
+        titre,
+        matricule
+      );
     } catch (err) {
       console.error("Erreur lors de l'envoi de l'email :", err);
     }
-    res.status(200).json({ message: "Utilisateur assigné à la tâche et notifié." });
+    res
+      .status(200)
+      .json({ message: "Utilisateur assigné à la tâche et notifié." });
   } catch (error) {
     console.error("Erreur assign_user_tache :", error);
     res.status(400).json({
@@ -267,7 +276,10 @@ const getTacheFiles = async (req, res) => {
     const files = await tacheService.find_tache_files(ref_tache);
     res.status(200).json(files);
   } catch (error) {
-    console.error("Erreur lors de la récupération des fichiers de la tâche :", error);
+    console.error(
+      "Erreur lors de la récupération des fichiers de la tâche :",
+      error
+    );
     res.status(500).json({ error: "Erreur serveur" });
   }
 };
@@ -295,8 +307,8 @@ const uploadTacheFile = async (req, res) => {
 
     const data = {
       ref_tache,
-      nom_fichier: file.originalname, 
-      chemin_fichier: file.filename  
+      nom_fichier: file.originalname,
+      chemin_fichier: file.filename,
     };
 
     const inserted = await tacheService.add_tache_files(data);
@@ -344,11 +356,13 @@ async function AvancementParPhaseParProjet(req, res) {
 const getTachesAccomplies = async (req, res) => {
   try {
     const { matricule } = req.params;
-    const result = await tacheService.getTachesAccompliesParUtilisateur(matricule);
+    const result = await tacheService.getTachesAccompliesParUtilisateur(
+      matricule
+    );
     res.status(200).json(result);
   } catch (error) {
-    console.error('Erreur getTachesAccomplies:', error);
-    res.status(500).json({ message: 'Erreur serveur' });
+    console.error("Erreur getTachesAccomplies:", error);
+    res.status(500).json({ message: "Erreur serveur" });
   }
 };
 const getTachesEnCours = async (req, res) => {
@@ -357,8 +371,8 @@ const getTachesEnCours = async (req, res) => {
     const result = await tacheService.getTachesEnCoursParUtilisateur(matricule);
     res.status(200).json(result);
   } catch (error) {
-    console.error('Erreur getTachesAccomplies:', error);
-    res.status(500).json({ message: 'Erreur serveur' });
+    console.error("Erreur getTachesAccomplies:", error);
+    res.status(500).json({ message: "Erreur serveur" });
   }
 };
 const get_all_Users_Tache = async (req, res) => {
@@ -367,14 +381,46 @@ const get_all_Users_Tache = async (req, res) => {
     const result = await tacheService.getUsersTacheAvecEmails(ref_tache);
     res.status(200).json(result);
   } catch (error) {
-    console.error('Erreur getTachesAccomplies:', error);
-    res.status(500).json({ message: 'Erreur serveur' });
+    console.error("Erreur getTachesAccomplies:", error);
+    res.status(500).json({ message: "Erreur serveur" });
   }
 };
+async function addTempsTache(req, res) {
+  try {
+    const { ref_tache, heures = 0, minutes = 0 } = req.body;
 
+    if (!ref_tache) {
+      return res.status(400).json({ error: "ref_tache est requis" });
+    }
+    const temps_passe_minutes = heures * 60 + minutes;
+    const inserted = await tacheService.insert_temps_tache({
+      ref_tache,
+      temps_passe_minutes,
+    });
 
+    res.status(201).json({
+      message: "Temps passé ajouté avec succès.",
+      ref_tache,
+      temps_passe_minutes,
+    });
+  } catch (error) {
+    console.error("Erreur addTempsTache :", error);
+    res.status(500).json({ error: "Erreur serveur : " + error.message });
+  }
+}
+
+async function getHeuresParPhase(req, res) {
+  try {
+    const data = await tacheService.heuresParPhase();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+}
 
 module.exports = {
+  getHeuresParPhase,
+  addTempsTache,
   assign_user_sans_condition,
   get_notification_user,
   get_all_Users_Tache,
@@ -401,5 +447,5 @@ module.exports = {
   getTachesAccomplies,
   getTachesEnCours,
   delete_tache_complete,
-  listTachesAccompliesAllUser
+  listTachesAccompliesAllUser,
 };

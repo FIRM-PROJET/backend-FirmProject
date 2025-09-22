@@ -163,6 +163,12 @@ CREATE TABLE tache (
     date_fin_prevu DATE,
     date_fin_reelle DATE
 );
+
+CREATE TABLE temps_tache (
+   ref_tache VARCHAR(250) REFERENCES tache (ref_tache),
+   temps_passe_minutes INT NOT NULL CHECK (temps_passe_minutes >= 0)
+);
+
 CREATE TABLE module_projet (
     ref_projet VARCHAR(250) PRIMARY KEY,
     nom_projet TEXT,
@@ -290,6 +296,7 @@ CREATE TABLE notifications (
   id SERIAL PRIMARY KEY,
   message TEXT,
   id_utilisateur VARCHAR(250) REFERENCES utilisateur (matricule),
-  date_creation     TIMESTAMP DEFAULT NOW(),
+  date_creation TIMESTAMP DEFAULT NOW(),
   expire_at TIMESTAMP
 );
+

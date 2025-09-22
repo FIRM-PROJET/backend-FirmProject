@@ -39,3 +39,10 @@ Ajout récapitulatif heure passé et évaluation 1 fois dans la semaine au Manag
 Derniers checks : 
 1.Suppression des notificiations expirés
 
+
+A FAIRE 
+-liste tâche auto rafraichissement 
+-css phases + get total heure passé sur la phase 
+-css du mail 
+-css notifications traduction du message de la notif 
+

@@ -25,6 +25,8 @@ router.get('/en_cours/:matricule', ctrl.getTachesEnCours);
 
 router.get("/taches_accomplies", ctrl.listTachesAccompliesAllUser);
 
+router.post("/temps_tache", ctrl.addTempsTache);
+
 // Configuration de multer pour les fichiers
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -46,7 +48,7 @@ router.get("/avancementParProjet", ctrl.AvancementGlobalParProjet);
 router.get("/get_all_users_tache/:ref_tache", ctrl.get_all_Users_Tache);
 router.get("/notification_user/:matricule", ctrl.get_notification_user);
 
-
+router.get("/phases_heures", ctrl.getHeuresParPhase);
 
 
 
