@@ -37,8 +37,9 @@ CREATE TABLE type_construction (
     description TEXT
 );
 
-CREATE TABLE projet (
-    id_projet VARCHAR(250) PRIMARY KEY,
+
+CREATE TABLE projet_referent (
+    id_projet_referent VARCHAR(250) PRIMARY KEY,
     nom_projet VARCHAR(100) NOT NULL,
     description TEXT,
     id_client VARCHAR(250) NOT NULL REFERENCES client (id_client),
@@ -87,7 +88,7 @@ CREATE TABLE type_surface (
 
 CREATE TABLE details_projet (
     id_details_projet VARCHAR(250) PRIMARY KEY,
-    id_projet VARCHAR(250) NOT NULL REFERENCES projet (id_projet),
+    id_projet_referent VARCHAR(250) NOT NULL REFERENCES projet_referent (id_projet_referent),
     nombre_etages INT,
     surface_totale INT,
     id_type_surface VARCHAR(100),
@@ -105,15 +106,16 @@ CREATE TABLE type_fichier (
 
 CREATE TABLE fichier_projet (
     id_fichier_projet VARCHAR(250) PRIMARY KEY,
-    id_projet VARCHAR(250) NOT NULL REFERENCES projet (id_projet),
+    id_projet_referent VARCHAR(250) NOT NULL REFERENCES projet_referent (id_projet_referent),
     nom_fichier VARCHAR(100),
+
     chemin_fichier TEXT,
     date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_type_fichier VARCHAR(250) REFERENCES type_fichier (id_type_fichier)
 );
 
 CREATE TABLE surface_projet (
-    id_projet VARCHAR(250) NOT NULL REFERENCES projet (id_projet),
+    id_projet_referent VARCHAR(250) NOT NULL REFERENCES projet_referent (id_projet_referent),
     id_type_surface VARCHAR(250) NOT NULL REFERENCES type_surface (id_type_surface),
     surface INT
 );
@@ -155,14 +157,13 @@ CREATE TABLE tache (
     ref_tache VARCHAR(250) PRIMARY KEY,
     nom_tache VARCHAR(250),
     description TEXT,
-    ref_projet VARCHAR(250) NOT NULL REFERENCES module_projet (ref_projet),
+    ref_projet VARCHAR(250) NOT NULL REFERENCES projet (ref_projet),
     id_phase VARCHAR(250) NOT NULL REFERENCES phases (id_phase),
     date_debut DATE,
     duree DECIMAL,
     id_unite_duree INT REFERENCES unite_duree (id_unite_duree),
     date_fin_prevu DATE,
-    date_fin_reelle DATE,
-    auto_verified BOOLEAN DEFAULT FALSE
+    date_fin_reelle DATE
 );
 
 CREATE TABLE temps_tache (
@@ -170,15 +171,7 @@ CREATE TABLE temps_tache (
    temps_passe_minutes INT NOT NULL CHECK (temps_passe_minutes >= 0)
 );
 
-CREATE TABLE tache_verifie_utilisateur (
-    ref_tache VARCHAR(250) REFERENCES tache (ref_tache),
-    matricule VARCHAR(250) REFERENCES utilisateur (matricule),
-    is_okay BOOLEAN,
-    raison TEXT,
-    date_verification TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE module_projet (
+CREATE TABLE projet (
     ref_projet VARCHAR(250) PRIMARY KEY,
     nom_projet TEXT,
     description TEXT,
@@ -193,7 +186,7 @@ CREATE TABLE phases (
 );
 
 CREATE TABLE projet_phase (
-    ref_projet VARCHAR(250) NOT NULL REFERENCES module_projet (ref_projet),
+    ref_projet VARCHAR(250) NOT NULL REFERENCES projet (ref_projet),
     id_phase VARCHAR(250) NOT NULL REFERENCES phases (id_phase),
     date_debut DATE,
     date_fin DATE,
@@ -201,7 +194,7 @@ CREATE TABLE projet_phase (
 );
 
 CREATE TABLE projet_phase_utilisateur (
-    ref_projet VARCHAR(250) NOT NULL REFERENCES module_projet (ref_projet),
+    ref_projet VARCHAR(250) NOT NULL REFERENCES projet (ref_projet),
     id_phase VARCHAR(250) NOT NULL REFERENCES phases (id_phase),
     matricule VARCHAR(250) NOT NULL REFERENCES utilisateur (matricule),
     date_affectation DATE DEFAULT CURRENT_DATE,
@@ -239,8 +232,6 @@ CREATE TABLE historique_statut (
         )
     )
 );
-
-
 CREATE TABLE sous_tache (
     ref_sous_tache VARCHAR(250) PRIMARY KEY,
     nom_sous_tache VARCHAR(250),
@@ -258,13 +249,6 @@ CREATE TABLE utilisateur_tache (
     matricule VARCHAR(250) REFERENCES utilisateur (matricule),
     ref_tache VARCHAR(250) REFERENCES tache (ref_tache),
     UNIQUE (matricule, ref_tache)
-);
-
-CREATE TABLE utilisateur_sous_tache (
-    id SERIAL PRIMARY KEY,
-    matricule VARCHAR,
-    ref_sous_tache VARCHAR(250) REFERENCES sous_tache (ref_sous_tache),
-    UNIQUE (matricule, ref_sous_tache)
 );
 
 CREATE TABLE jours_ferie (
@@ -309,5 +293,3 @@ CREATE TABLE notifications (
   expire_at TIMESTAMP
 );
 
-
-SELECT * FROM v_taches_terminees_non_verifiees WHERE matricule = 'EMP0013'

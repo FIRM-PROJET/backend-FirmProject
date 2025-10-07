@@ -117,7 +117,7 @@ const insert_tache = async ({
   return ref_tache;
 };
 
-const insert_temps_tache = async ({ ref_tache, temps_passe_minutes}) => {
+const insert_temps_tache = async ({ ref_tache, temps_passe_minutes }) => {
   const query = `
     INSERT INTO temps_tache (ref_tache, temps_passe_minutes)
     VALUES ($1, $2)
@@ -129,8 +129,6 @@ const insert_temps_tache = async ({ ref_tache, temps_passe_minutes}) => {
   const result = await db.query(query, values);
   return result.rows[0].ref_tache;
 };
-
-
 
 const insert_sous_tache = async ({
   nom_sous_tache,
@@ -256,7 +254,7 @@ const getUsersTache = async (ref_tache) => {
   return res.rows;
 };
 
-const getTaches = async () => { 
+const getTaches = async () => {
   const res = await db.query(`
     SELECT 
       t.*,
@@ -284,7 +282,6 @@ const getTaches = async () => {
 
   return taches;
 };
-
 
 // Récupère les sous-tâches, avec leur statut et leurs utilisateurs
 const getSousTaches = async (ref_sous_taches) => {
@@ -1048,9 +1045,176 @@ async function heuresParPhase() {
     throw err;
   }
 }
+async function update_auto_verified(refTache, isVerified) {
+  const query = `
+    UPDATE tache
+    SET auto_verified = $2
+    WHERE ref_tache = $1;
+  `;
+  try {
+    await db.query(query, [refTache, isVerified]);
+  } catch (err) {
+    console.error("Erreur lors de la mise à jour de auto_verified :", err);
+    throw err;
+  }
+}
+async function setTachesAutoVerified(listeTaches) {
+  if (!Array.isArray(listeTaches) || listeTaches.length === 0) {
+    throw new Error("La liste de tâches est vide ou invalide");
+  }
+
+  const query = `
+    UPDATE tache
+    SET auto_verified = TRUE
+    WHERE ref_tache = ANY($1)
+  `;
+
+  try {
+    await db.query(query, [listeTaches]);
+  } catch (err) {
+    console.error("Erreur lors de la mise à jour des tâches :", err);
+    throw err;
+  }
+}
+
+async function get_taches_terminees_non_verifiees(matricule) {
+  const query = `SELECT * FROM v_taches_terminees_non_verifiees WHERE matricule = $1`;
+
+  try {
+    const { rows } = await db.query(query, [matricule]);
+    return rows;
+  } catch (err) {
+    console.error(
+      "Erreur lors de la récuperation des taches non verifiés :",
+      err
+    );
+    throw err;
+  }
+}
+async function get_taches_terminees_verifiees(matricule) {
+  const query = `SELECT * FROM v_taches_terminees_verifiees WHERE matricule = $1`;
+
+  try {
+    const { rows } = await db.query(query, [matricule]);
+    return rows;
+  } catch (err) {
+    console.error("Erreur lors de la récuperation des taches verifiés :", err);
+    throw err;
+  }
+}
+async function insert_tache_verifie_user(listeTaches, matricule) {
+  const query = `
+    INSERT INTO tache_verifie_utilisateur (ref_tache, matricule, is_okay, raison)
+    VALUES ($1, $2, $3, $4);
+  `;
+  try {
+    for (const tache of listeTaches) {
+      const values = [
+        tache.ref_tache,
+        matricule,
+        tache.is_okay,
+        tache.raison || null,
+      ];
+      await db.query(query, values);
+      if (tache.is_okay === false) {
+        await update_auto_verified(tache.ref_tache, false);
+      } else {
+        await update_auto_verified(tache.ref_tache, true);
+      }
+    }
+    console.log("Toutes les vérifications ont été enregistrées avec succès !");
+  } catch (err) {
+    console.error("Erreur lors de l'insertion des vérifications :", err);
+    throw err;
+  }
+}
+async function getTachesVerifieesParUtilisateur(matricule) {
+  const query = `
+    SELECT 
+      ref_tache,
+      is_okay,
+      raison,
+      date_verification
+    FROM 
+      tache_verifie_utilisateur
+    WHERE 
+      matricule = $1
+    ORDER BY 
+      date_verification DESC;
+  `;
+
+  try {
+    const { rows } = await db.query(query, [matricule]);
+    return rows;
+  } catch (err) {
+    console.error(
+      "Erreur lors de la récupération des tâches vérifiées pour l'utilisateur :",
+      err
+    );
+    throw err;
+  }
+}
+
+async function getTachesVerifieesParSemaine() {
+  const query = `
+    SELECT
+      matricule,
+      DATE_TRUNC('week', date_verification) AS semaine,
+      COUNT(*) FILTER (WHERE is_okay = true) AS total_ok,
+      COUNT(*) FILTER (WHERE is_okay = false) AS total_non_ok
+    FROM
+      tache_verifie_utilisateur
+    GROUP BY
+      matricule,
+      DATE_TRUNC('week', date_verification)
+    ORDER BY
+      matricule ASC,
+      semaine ASC;
+  `;
+
+  try {
+    const { rows } = await db.query(query);
+    return rows;
+  } catch (err) {
+    console.error(
+      "Erreur lors de la récupération des tâches par semaine :",
+      err
+    );
+    throw err;
+  }
+}
+async function getTachesVerifieesParMois() {
+  const query = `
+    SELECT
+      matricule,
+      DATE_TRUNC('month', date_verification) AS mois,
+      COUNT(*) FILTER (WHERE is_okay = true) AS total_ok,
+      COUNT(*) FILTER (WHERE is_okay = false) AS total_non_ok
+    FROM
+      tache_verifie_utilisateur
+    GROUP BY
+      matricule,
+      DATE_TRUNC('month', date_verification)
+    ORDER BY
+      matricule ASC,
+      mois ASC;
+  `;
+
+  try {
+    const { rows } = await db.query(query);
+    return rows;
+  } catch (err) {
+    console.error(
+      "Erreur lors de la récupération des tâches par mois :",
+      err
+    );
+    throw err;
+  }
+}
 
 module.exports = {
   heuresParPhase,
+  setTachesAutoVerified,
   assignation_sans_condition,
   getTacheByRef,
   getUsersTacheAvecEmails,
@@ -1076,4 +1240,10 @@ module.exports = {
   getTachesAccompliesParUtilisateur,
   getTachesEnCoursParUtilisateur,
   insert_temps_tache,
+  get_taches_terminees_non_verifiees,
+  get_taches_terminees_verifiees,
+  insert_tache_verifie_user,
+  getTachesVerifieesParUtilisateur,
+  getTachesVerifieesParSemaine,
+  getTachesVerifieesParMois,
 };

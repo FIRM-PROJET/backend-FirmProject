@@ -86,16 +86,53 @@ async function assign_user_sous_tache(req, res) {
       .send("Erreur assignation utilisateur sous-tâche : " + error.message);
   }
 }
-
 async function assign_user_sans_condition(req, res) {
   try {
     const { matricule, ref_tache } = req.body;
+
+    // Récupération du nom de la tâche
+    const tache = await tacheService.getTacheByRef(ref_tache);
+    if (!tache) {
+      return res.status(404).json({ message: "Tâche non trouvée." });
+    }
+    const titre = tache.nom_tache;
+
+    // Assignation sans condition
     await tacheService.assignation_sans_condition(matricule, ref_tache);
-    res.status(200).json({ message: "Utilisateur assigné à la tâche." });
-  } catch (error) {
+
+    // Ajout d'une notification interne
+    const messageNotif = `Vous avez été assigné (sans condition) à la tâche "${titre}"`;
+    const expireAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000); // expire dans 2 jours
+    try {
+      await notificationService.addNotification(
+        matricule,
+        messageNotif,
+        expireAt
+      );
+    } catch (err) {
+      console.error("Erreur lors de l'ajout de la notification :", err);
+    }
+
+    // Envoi de la notification par mail
+    try {
+      await notificationService.notifyAssignmentTache(
+        ref_tache,
+        titre,
+        matricule
+      );
+    } catch (err) {
+      console.error("Erreur lors de l'envoi de l'email :", err);
+    }
+
     res
-      .status(500)
-      .send("Erreur assignation utilisateur sous-tâche : " + error.message);
+      .status(200)
+      .json({ message: "Utilisateur assigné à la tâche (sans condition) et notifié." });
+
+  } catch (error) {
+    console.error("Erreur assign_user_sans_condition :", error);
+    res.status(500).json({
+      message: `Erreur assignation utilisateur sans condition : ${error.message || "Erreur inconnue"}`
+    });
   }
 }
 
@@ -418,8 +455,108 @@ async function getHeuresParPhase(req, res) {
   }
 }
 
+async function getTachesTermineesNonVerifiees(req, res) {
+  try {
+    const { matricule } = req.params;
+    if (!matricule) {
+      return res.status(400).json({ error: "Le matricule est requis" });
+    }
+    const taches = await tacheService.get_taches_terminees_non_verifiees(matricule);
+    res.status(200).json(taches);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur récupération tâches non vérifiées : " + error.message });
+  }
+}
+
+// Récupère les tâches terminées vérifiées pour un utilisateur
+async function getTachesTermineesVerifiees(req, res) {
+  try {
+    const { matricule } = req.params;
+    if (!matricule) {
+      return res.status(400).json({ error: "Le matricule est requis" });
+    }
+    const taches = await tacheService.get_taches_terminees_verifiees(matricule);
+    res.status(200).json(taches);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur récupération tâches vérifiées : " + error.message });
+  }
+}
+
+// Insert les vérifications d'un utilisateur
+async function insertTacheVerifieUser(req, res) {
+  try {
+    const { matricule, listeTaches } = req.body;
+    if (!matricule || !listeTaches || !Array.isArray(listeTaches)) {
+      return res.status(400).json({ error: "Matricule et listeTaches sont requis" });
+    }
+
+    await tacheService.insert_tache_verifie_user(listeTaches, matricule);
+    res.status(200).json({ message: "Vérifications enregistrées avec succès !" });
+  } catch (error) {
+    res.status(500).json({ error: "Erreur insertion vérifications : " + error.message });
+  }
+}
+
+// Liste des tâches vérifiées par utilisateur
+async function getTachesVerifieesParUtilisateur(req, res) {
+  try {
+    const { matricule } = req.params;
+    if (!matricule) {
+      return res.status(400).json({ error: "Le matricule est requis" });
+    }
+    const taches = await tacheService.getTachesVerifieesParUtilisateur(matricule);
+    res.status(200).json(taches);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur récupération tâches vérifiées : " + error.message });
+  }
+}
+
+// Statistiques par semaine
+async function getTachesVerifieesParSemaine(req, res) {
+  try {
+    const stats = await tacheService.getTachesVerifieesParSemaine();
+    res.status(200).json(stats);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur récupération stats par semaine : " + error.message });
+  }
+}
+
+// Statistiques par mois
+async function getTachesVerifieesParMois(req, res) {
+  try {
+    const stats = await tacheService.getTachesVerifieesParMois();
+    res.status(200).json(stats);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur récupération stats par mois : " + error.message });
+  }
+}
+
+async function setAutoVerifiedController(req, res) {
+  try {
+    const { listeTaches } = req.body;
+
+    if (!listeTaches || !Array.isArray(listeTaches) || listeTaches.length === 0) {
+      return res.status(400).json({ error: "La liste de tâches est requise" });
+    }
+
+    await tacheService.setTachesAutoVerified(listeTaches);
+
+    res.status(200).json({ message: "Tâches mises à jour avec succès en auto_verified = true" });
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la mise à jour : " + error.message });
+  }
+}
+
+
 module.exports = {
   getHeuresParPhase,
+  setAutoVerifiedController,
+  getTachesTermineesNonVerifiees,
+  getTachesTermineesVerifiees,
+  insertTacheVerifieUser,
+  getTachesVerifieesParUtilisateur,
+  getTachesVerifieesParSemaine,
+  getTachesVerifieesParMois,
   addTempsTache,
   assign_user_sans_condition,
   get_notification_user,

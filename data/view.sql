@@ -98,3 +98,70 @@ FROM fiche_estimation_devis f
 LEFT JOIN travaux_custom_devis tc ON f.id_fiche_estimation = tc.id_fiche_estimation
 LEFT JOIN montant_travaux_devis mtd ON f.id_fiche_estimation = mtd.id_fiche_estimation
 LEFT JOIN travaux_standards ts ON mtd.id_travaux = ts.id_travaux;
+
+--VIEW TACHES TERMINEES NON VERIFIEES 
+CREATE OR REPLACE VIEW v_taches_terminees_non_verifiees AS
+SELECT 
+    t.ref_tache,
+    t.nom_tache,
+    t.description,
+    t.ref_projet,
+    t.id_phase,
+    t.date_debut,
+    t.date_fin_prevu,
+    t.date_fin_reelle,
+    t.auto_verified,
+    u.matricule,
+    hs.date_statut AS date_statut_dernier
+FROM 
+    tache t
+JOIN 
+    historique_statut hs ON hs.ref_tache = t.ref_tache
+JOIN 
+    statut s ON hs.id_statut = s.id_statut
+JOIN 
+    utilisateur_tache u ON u.ref_tache = t.ref_tache
+WHERE 
+    s.id_statut = 3
+    AND t.auto_verified = FALSE
+    AND hs.date_statut = (
+        SELECT MAX(hs2.date_statut)
+        FROM historique_statut hs2
+        WHERE hs2.ref_tache = t.ref_tache
+    )
+ORDER BY 
+    hs.date_statut DESC;
+
+--VIEW TACHES TERMINEES VERIFIEES
+CREATE OR REPLACE VIEW v_taches_terminees_verifiees AS
+SELECT 
+    t.ref_tache,
+    t.nom_tache,
+    t.description,
+    t.ref_projet,
+    t.id_phase,
+    t.date_debut,
+    t.date_fin_prevu,
+    t.date_fin_reelle,
+    t.auto_verified,
+    u.matricule,
+    hs.date_statut AS date_statut_dernier
+FROM 
+    tache t
+JOIN 
+    historique_statut hs ON hs.ref_tache = t.ref_tache
+JOIN 
+    statut s ON hs.id_statut = s.id_statut
+JOIN 
+    utilisateur_tache u ON u.ref_tache = t.ref_tache
+WHERE 
+    s.id_statut = 3
+    AND t.auto_verified = TRUE
+    AND hs.date_statut = (
+        SELECT MAX(hs2.date_statut)
+        FROM historique_statut hs2
+        WHERE hs2.ref_tache = t.ref_tache
+    )
+ORDER BY 
+    hs.date_statut DESC;
+
