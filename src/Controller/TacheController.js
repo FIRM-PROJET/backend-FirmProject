@@ -546,8 +546,6 @@ async function setAutoVerifiedController(req, res) {
     res.status(500).json({ error: "Erreur lors de la mise à jour : " + error.message });
   }
 }
-
-
 module.exports = {
   getHeuresParPhase,
   setAutoVerifiedController,

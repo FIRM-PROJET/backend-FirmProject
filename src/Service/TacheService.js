@@ -1119,10 +1119,9 @@ async function insert_tache_verifie_user(listeTaches, matricule) {
       if (tache.is_okay === false) {
         await update_auto_verified(tache.ref_tache, false);
       } else {
-        await update_auto_verified(tache.ref_tache, true);
+        await update_auto_verified(tache.ref_tache, null);
       }
     }
-    console.log("Toutes les vérifications ont été enregistrées avec succès !");
   } catch (err) {
     console.error("Erreur lors de l'insertion des vérifications :", err);
     throw err;

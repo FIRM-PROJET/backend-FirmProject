@@ -1,13 +1,13 @@
--Prendre en photo tableau phase 
--prendre fichier bdq pour devis 
--prendre fichier recapitulatif avancement projet 
--prendre fichier planning journalier par personne 
-
--RESTE A FAIRE : 
+-RESTE A FAIRE :
+(OK)-Insertion tache sans condition
+-Condition ajouter nouvelle tache uniquement pour admin 
+-Supression tache admin
 -Supression des notifications expirées
--Insertion tache sans conditions
 -Suppresion projet referrent 
 -
+
+
+Bonjour je voudrais afficher en plus petit la liste des resulats ne plus afficher la ref mais uniquement le nom de la tache et don refus et la tache en petit , je voudrais trié par semaine , daonc la semaine actuelle et la date mais sinon ajouté quand meme un tout afficher , donne moi le js et css modifié
 RESET DATABASE ne pas supp:
 -client
 -fondation

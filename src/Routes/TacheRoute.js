@@ -50,9 +50,9 @@ router.get("/notification_user/:matricule", ctrl.get_notification_user);
 
 router.get("/phases_heures", ctrl.getHeuresParPhase);
 
-// Tâches terminées non vérifiées
+// Tâches terminées non auto-vérifiées
 router.get("/non_verifiees/:matricule", ctrl.getTachesTermineesNonVerifiees);
-// Tâches terminées vérifiées
+// Tâches terminées auto-vérifiées
 router.get("/verifiees/:matricule", ctrl.getTachesTermineesVerifiees);
 // Insertion des vérifications
 router.post("/verifiees", ctrl.insertTacheVerifieUser);
@@ -64,7 +64,5 @@ router.get("/stats/semaine", ctrl.getTachesVerifieesParSemaine);
 router.get("/stats/mois", ctrl.getTachesVerifieesParMois);
 // Mettre auto_verified = true une liste de tâchesn aut
 router.put("/auto_verified", ctrl.setAutoVerifiedController);
-
-
 
 module.exports = router;

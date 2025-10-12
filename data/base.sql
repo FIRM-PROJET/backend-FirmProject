@@ -310,4 +310,3 @@ CREATE TABLE notifications (
 );
 
 
-SELECT * FROM v_taches_terminees_non_verifiees WHERE matricule = 'EMP0013'
