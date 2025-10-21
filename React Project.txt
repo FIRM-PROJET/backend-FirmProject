@@ -33,3 +33,5 @@ Photo de profil email : Gravatar
 npm install react-gravatar
 
 npm install crypto-js
+npm install archiver
+npm install html2pdf.js

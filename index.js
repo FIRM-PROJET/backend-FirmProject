@@ -27,5 +27,8 @@ app.use('/api/tache', tacheRoute);
 const CommentaireRoute = require('./src/Routes/CommentaireRoute');
 app.use('/api/commentaires', CommentaireRoute);
 
+const DeleteRoute = require('./src/Routes/DeleteRoute');
+app.use('/api/del', DeleteRoute);
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Serveur lancé sur port ${PORT}`));

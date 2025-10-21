@@ -1,13 +1,13 @@
 -RESTE A FAIRE :
 (OK)-Insertion tache sans condition
--Condition ajouter nouvelle tache uniquement pour admin 
--Supression tache admin
--Supression des notifications expirées
--Suppresion projet referrent 
--
+(OK)-Condition ajouter nouvelle tache uniquement pour admin 
+(OK)-Supression module_projet et toutes les phases et tache de ce module_projet
+(OK)-Supression des notifications apres la date du expired_at
+(OK)-Supression table projet avec toutes les liaisons
+(OK)-supression tache 
 
+Trié les fichiers par projet et ajouter un 
 
-Bonjour je voudrais afficher en plus petit la liste des resulats ne plus afficher la ref mais uniquement le nom de la tache et don refus et la tache en petit , je voudrais trié par semaine , daonc la semaine actuelle et la date mais sinon ajouté quand meme un tout afficher , donne moi le js et css modifié
 RESET DATABASE ne pas supp:
 -client
 -fondation

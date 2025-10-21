@@ -85,18 +85,18 @@ CREATE TABLE type_surface (
     description TEXT
 );
 
-CREATE TABLE details_projet (
-    id_details_projet VARCHAR(250) PRIMARY KEY,
-    id_projet VARCHAR(250) NOT NULL REFERENCES projet (id_projet),
-    nombre_etages INT,
-    surface_totale INT,
-    id_type_surface VARCHAR(100),
-    id_structure VARCHAR(250) REFERENCES structure (id_structure),
-    id_toiture VARCHAR(250) REFERENCES toiture (id_toiture),
-    id_menuiserie VARCHAR(250) REFERENCES menuiserie (id_menuiserie),
-    id_type_plancher VARCHAR(250) REFERENCES type_plancher (id_type_plancher),
-    id_fondation VARCHAR(250) REFERENCES fondation (id_fondation)
-);
+    CREATE TABLE details_projet (
+        id_details_projet VARCHAR(250) PRIMARY KEY,
+        id_projet VARCHAR(250) NOT NULL REFERENCES projet (id_projet),
+        nombre_etages INT,
+        surface_totale INT,
+        id_type_surface VARCHAR(100),
+        id_structure VARCHAR(250) REFERENCES structure (id_structure),
+        id_toiture VARCHAR(250) REFERENCES toiture (id_toiture),
+        id_menuiserie VARCHAR(250) REFERENCES menuiserie (id_menuiserie),
+        id_type_plancher VARCHAR(250) REFERENCES type_plancher (id_type_plancher),
+        id_fondation VARCHAR(250) REFERENCES fondation (id_fondation)
+    );
 
 CREATE TABLE type_fichier (
     id_type_fichier VARCHAR(250) PRIMARY KEY,

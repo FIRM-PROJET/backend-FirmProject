@@ -20,12 +20,15 @@ INSERT INTO structure (nom, description) VALUES
 
 INSERT INTO toiture (nom, description) VALUES
 ('Béton armé', 'Toiture sans pente'),
-('Tôle', 'Toiture avec une pente prononcée');
+('Tôle', 'Toiture avec une pente prononcée')
+('Mixte', 'Toiture mixte (béton et tôle)');
 
 INSERT INTO menuiserie (nom, description) VALUES
 ('Bois', 'Menuiserie en bois'),
 ('Aluminium', 'Menuiserie en aluminium'),
-('Métaliqque', 'Menuiserie métallique');
+('Métaliqque', 'Menuiserie métallique'),
+('Grand Baie', 'Menuiserie avec grande baie vitrée'),
+('Normal', 'Menuiserie normale');
 
 INSERT INTO fondation (nom, description) VALUES
 ('Normal', 'Fondation continue en béton sans études'),

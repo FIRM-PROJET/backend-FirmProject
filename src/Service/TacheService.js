@@ -776,14 +776,25 @@ async function find_tache_files(ref_tache) {
 }
 async function find_all_tache_files() {
   try {
-    const sql = `SELECT id_fichier_tache,nom_fichier, chemin_fichier FROM fichier_tache`;
+    const sql = `
+      SELECT 
+        ft.id_fichier_tache,
+        ft.nom_fichier,
+        ft.chemin_fichier,
+        t.ref_tache,
+        t.ref_projet,
+        mp.nom_projet
+      FROM fichier_tache ft
+      JOIN tache t ON ft.ref_tache = t.ref_tache
+      JOIN module_projet mp ON t.ref_projet = mp.ref_projet
+      ORDER BY ft.date_ajout
+    `;
+
     const result = await db.query(sql);
-    return result.rows;
+    return result.rows; 
   } catch (error) {
-    console.error(
-      "Erreur lors de la récupération des détails du projet :",
-      error
-    );
+    console.error("Erreur lors de la récupération des fichiers et projets :", error);
+    throw error;
   }
 }
 const add_tache_files = async (data) => {
