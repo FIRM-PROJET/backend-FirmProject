@@ -19,6 +19,34 @@ const addProjectPhase = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+const getPhaseProgress = async (req, res) => {
+  try {
+    const { ref_projet, id_phase } = req.query;
+
+    if (!ref_projet || !id_phase) {
+      return res.status(400).json({
+        success: false,
+        message: "ref_projet & id_phase requis",
+      });
+    }
+
+    const data = { ref_projet, id_phase };
+    const users = await module_projet.getUsersProgress(data);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        ref_projet,
+        id_phase,
+        users,
+      },
+    });
+
+  } catch (error) {
+    console.error("Erreur getPhaseProgress :", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 const updateFinReellePhase = async (req, res) => {
   try {
@@ -131,6 +159,7 @@ const updateProjectPhase = async (req, res) => {
   }
 };
 module.exports = {
+  getPhaseProgress,
   deleteProjectPhase,
   updateProjectPhase,
   addNewProject,

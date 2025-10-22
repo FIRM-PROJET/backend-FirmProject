@@ -21,7 +21,12 @@ const add_project_phase = async (data) => {
     ) VALUES ($1, $2, $3, $4)
     RETURNING *;
   `;
-  const values = [data.ref_projet, data.id_phase, data.date_debut, data.date_fin];
+  const values = [
+    data.ref_projet,
+    data.id_phase,
+    data.date_debut,
+    data.date_fin,
+  ];
   const { rows } = await db.query(query, values);
   return rows[0];
 };
@@ -39,7 +44,7 @@ const add_project_utilisateur = async (data) => {
   return rows[0];
 };
 
-// Ajouter une date reelle à une phase 
+// Ajouter une date reelle à une phase
 const add_fin_reelle_phase = async (data) => {
   const query = `
     UPDATE projet_phase 
@@ -51,7 +56,6 @@ const add_fin_reelle_phase = async (data) => {
   const { rows } = await db.query(query, values);
   return rows[0];
 };
-
 
 // Supprimer un utilisateur d’une phase d’un projet
 const delete_project_utilisateur = async (data) => {
@@ -73,6 +77,58 @@ const get_users_by_phase = async (data) => {
   `;
   const { rows } = await db.query(query, [data.ref_projet, data.id_phase]);
   return rows;
+};
+
+const getUsersProgress = async (data) => {
+  // 1) récupérer les users de cette phase
+  const users = await get_users_by_phase(data);
+
+  // 2) récupérer total et done dans 2 queries
+  const totalsQuery = `
+      SELECT ut.matricule, COUNT(*) AS total
+      FROM utilisateur_tache ut
+      JOIN tache t ON ut.ref_tache = t.ref_tache
+      WHERE t.ref_projet = $1 AND t.id_phase = $2
+      GROUP BY ut.matricule;
+    `;
+  const doneQuery = `
+      SELECT ut.matricule, COUNT(DISTINCT ut.ref_tache) AS done
+      FROM utilisateur_tache ut
+      JOIN tache t ON ut.ref_tache = t.ref_tache
+      JOIN historique_statut hs ON hs.ref_tache = ut.ref_tache
+      WHERE t.ref_projet = $1
+        AND t.id_phase = $2
+        AND hs.id_statut = 3
+      GROUP BY ut.matricule;
+    `;
+
+  const { rows: totals } = await db.query(totalsQuery, [
+    data.ref_projet,
+    data.id_phase,
+  ]);
+  const { rows: dones } = await db.query(doneQuery, [
+    data.ref_projet,
+    data.id_phase,
+  ]);
+
+  // transformer en map matricule → value
+  const totalsMap = Object.fromEntries(
+    totals.map((r) => [r.matricule, Number(r.total)])
+  );
+  const donesMap = Object.fromEntries(
+    dones.map((r) => [r.matricule, Number(r.done)])
+  );
+
+  // 3) renvoyer joint
+  return users
+    .map((u) => ({
+      matricule: u.matricule,
+      nom: u.nom,
+      prenom: u.prenom,
+      total: totalsMap[u.matricule] || 0,
+      done: donesMap[u.matricule] || 0,
+    }))
+    .filter((u) => u.total > 0); // <-- supprime ceux qui ont un total à 0
 };
 
 // Lister toutes les phases d’un projet
@@ -127,13 +183,18 @@ const update_project_phase = async (data) => {
     WHERE ref_projet = $3 AND id_phase = $4
     RETURNING *;
   `;
-  const values = [data.date_debut, data.date_fin, data.ref_projet, data.id_phase];
+  const values = [
+    data.date_debut,
+    data.date_fin,
+    data.ref_projet,
+    data.id_phase,
+  ];
   const { rows } = await db.query(query, values);
-  return rows[0]; 
+  return rows[0];
 };
 
-
 module.exports = {
+  getUsersProgress,
   add_fin_reelle_phase,
   add_new_project,
   add_project_phase,
@@ -145,5 +206,5 @@ module.exports = {
   get_all_phases,
   delete_project_phase,
   update_project_phase,
-  delete_user_project
+  delete_user_project,
 };

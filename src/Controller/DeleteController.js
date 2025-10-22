@@ -109,7 +109,6 @@ module.exports = {
           "../../files/projets",
           f.chemin_fichier
         );
-        console.log("Chemin du fichier:", filePath);
 
         // Vérifie si le fichier existe avant de l'ajouter
         if (fs.existsSync(filePath)) {

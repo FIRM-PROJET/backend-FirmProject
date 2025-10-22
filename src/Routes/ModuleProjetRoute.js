@@ -22,4 +22,6 @@ router.post("/user_phase",m_projetController.listUsersByPhase);
 router.delete("/phase/:ref_projet/:id_phase", m_projetController.deleteProjectPhase);
 router.put("/phase", m_projetController.updateProjectPhase);
 
+router.get("/phase-progress", m_projetController.getPhaseProgress);
+
 module.exports = router;

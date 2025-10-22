@@ -295,7 +295,6 @@ async function getAllProjetPhases() {
   }
 }
 
-
 module.exports = {
   findAll,
   add3_surface_projet,
@@ -311,5 +310,5 @@ module.exports = {
   create_client,
   find_devis_files,
   find_max_date_phase_by_projet,
-  getAllProjetPhases
+  getAllProjetPhases,
 };
